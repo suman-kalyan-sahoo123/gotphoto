@@ -1,0 +1,286 @@
+version: 2
+
+models:
+  - name: fact_order_lines
+    description: |
+      Core order line fact table with essential order metrics for basic reporting and analysis.
+      
+      This table serves as the foundation for order analysis, containing the most commonly used
+      metrics for daily reporting, dashboards, and operational analysis. It includes core business
+      measures like revenue, cost, margin, and quantity, along with key dimensional attributes
+      for slicing and dicing the data.
+      
+      **Grain:** One row per order line item (order_key + line_number)
+      **Use Cases:** Basic order reporting, revenue analysis, customer analysis, product performance
+      **Key Dimensions:** Customer, Supplier, Product, Date, Geography
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_key
+            - line_number
+    columns:
+      - name: order_fact_key
+        description: "Surrogate key for the fact table - unique identifier for each order line"
+        tests:
+          - unique
+          - not_null
+      - name: order_key
+        description: "Foreign key to order dimension - links to the order this line belongs to"
+        tests:
+          - not_null
+      - name: line_number
+        description: "Line number within the order - sequence number for this line item"
+        tests:
+          - not_null
+      - name: part_key
+        description: "Foreign key to product dimension - identifies the product being ordered"
+      - name: supplier_key
+        description: "Foreign key to supplier dimension - identifies the supplier providing the product"
+      - name: customer_key
+        description: "Foreign key to customer dimension - identifies the customer placing the order"
+      - name: order_date_key
+        description: "Foreign key to date dimension for order date - when the order was placed"
+      - name: ship_date_key
+        description: "Foreign key to date dimension for ship date - when the order was shipped"
+      - name: customer_nation_key
+        description: "Foreign key to geographic dimension - customer's nation identifier"
+      - name: supplier_nation_key
+        description: "Foreign key to geographic dimension - supplier's nation identifier"
+      - name: customer_nation_name
+        description: "Customer's nation name - for geographic analysis and reporting"
+      - name: customer_region_name
+        description: "Customer's region name - for regional analysis and reporting"
+      - name: supplier_nation_name
+        description: "Supplier's nation name - for supplier geographic analysis"
+      - name: supplier_region_name
+        description: "Supplier's region name - for regional supplier analysis"
+      - name: customer_segment
+        description: "Customer market segment (e.g., automobile, building) - for customer analysis"
+      - name: part_name
+        description: "Product name - for product reporting and analysis"
+      - name: manufacturer
+        description: "Product manufacturer - for manufacturer performance analysis"
+      - name: brand
+        description: "Product brand - for brand performance analysis"
+      - name: part_type
+        description: "Product type/category - for product category analysis"
+      - name: order_year
+        description: "Year when the order was placed - for time-based analysis"
+      - name: order_quarter
+        description: "Quarter when the order was placed - for quarterly reporting"
+      - name: order_month
+        description: "Month when the order was placed - for monthly reporting"
+      - name: order_month_name
+        description: "Month name when order was placed - for human-readable reporting"
+      - name: order_quarter_name
+        description: "Quarter name when order was placed - for human-readable reporting"
+      - name: ship_year
+        description: "Year when the order was shipped - for shipping time analysis"
+      - name: ship_quarter
+        description: "Quarter when the order was shipped - for shipping quarterly analysis"
+      - name: ship_month
+        description: "Month when the order was shipped - for shipping monthly analysis"
+      - name: ship_month_name
+        description: "Month name when order was shipped - for human-readable reporting"
+      - name: ship_quarter_name
+        description: "Quarter name when order was shipped - for human-readable reporting"
+      - name: quantity
+        description: "Quantity of units ordered and shipped - primary volume measure"
+      - name: gross_revenue
+        description: "Gross revenue before discounts - list price * quantity"
+      - name: net_revenue
+        description: "Net revenue after discounts - gross revenue - discount amount"
+      - name: supplier_cost
+        description: "Total cost from supplier - supplier cost * quantity"
+      - name: margin
+        description: "Profit margin in currency - net revenue - supplier cost"
+      - name: unit_price
+        description: "Price per unit - gross revenue / quantity"
+      - name: net_unit_price
+        description: "Net price per unit after discounts - net revenue / quantity"
+      - name: unit_cost
+        description: "Cost per unit from supplier - supplier cost / quantity"
+      - name: margin_per_unit
+        description: "Margin generated per unit - margin / quantity"
+      - name: order_size_category
+        description: "Order size classification - Large (>100), Medium (51-100), Small (≤50)"
+
+  - name: fact_pricing_analysis
+    description: |
+      Detailed pricing analysis fact table for deep-dive pricing and discount analysis.
+      
+      This table focuses specifically on pricing strategies, discount analysis, and pricing
+      performance metrics. It's designed for pricing analysts, sales teams, and business
+      intelligence teams who need to understand pricing effectiveness, discount patterns,
+      and price-to-list performance.
+      
+      **Grain:** One row per order line item (order_key + line_number)
+      **Use Cases:** Pricing analysis, discount strategy, price performance, competitive analysis
+      **Key Dimensions:** Product, Customer, Pricing Strategy
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_key
+            - line_number
+    columns:
+      - name: pricing_fact_key
+        description: "Surrogate key for the pricing fact table - unique identifier for each pricing record"
+        tests:
+          - unique
+          - not_null
+      - name: order_key
+        description: "Foreign key to order dimension - links to the order this pricing applies to"
+        tests:
+          - not_null
+      - name: line_number
+        description: "Line number within the order - sequence number for this line item"
+        tests:
+          - not_null
+      - name: part_key
+        description: "Foreign key to product dimension - identifies the product being priced"
+      - name: customer_key
+        description: "Foreign key to customer dimension - identifies the customer for pricing analysis"
+      - name: part_name
+        description: "Product name - for product-specific pricing analysis"
+      - name: manufacturer
+        description: "Product manufacturer - for manufacturer pricing strategy analysis"
+      - name: brand
+        description: "Product brand - for brand pricing analysis"
+      - name: part_type
+        description: "Product type/category - for category pricing analysis"
+      - name: list_price
+        description: "Product list price - manufacturer's suggested retail price"
+      - name: customer_segment
+        description: "Customer market segment - for segment-based pricing analysis"
+      - name: quantity
+        description: "Quantity ordered - for volume-based pricing analysis"
+      - name: gross_revenue
+        description: "Gross revenue before discounts - base for pricing calculations"
+      - name: discount_amount
+        description: "Discount amount applied - monetary value of the discount"
+      - name: net_revenue
+        description: "Net revenue after discounts - actual revenue received"
+      - name: tax_amount
+        description: "Tax amount - for tax-inclusive pricing analysis"
+      - name: average_selling_point
+        description: "Average selling price per unit - net revenue / quantity"
+      - name: discount_rate
+        description: "Discount rate as percentage of gross revenue - discount_amount / gross_revenue"
+      - name: discount_per_unit
+        description: "Discount amount per unit - discount_amount / quantity"
+      - name: unit_price
+        description: "Price per unit before discounts - gross_revenue / quantity"
+      - name: net_unit_price
+        description: "Net price per unit after discounts - net_revenue / quantity"
+      - name: price_to_list_ratio
+        description: "Ratio of actual price to list price - unit_price / list_price"
+      - name: gross_revenue_with_tax
+        description: "Gross revenue including tax - gross_revenue + tax_amount"
+      - name: net_revenue_with_tax
+        description: "Net revenue including tax - net_revenue + tax_amount"
+      - name: discount_category
+        description: "Discount category classification - High (>10%), Medium (5-10%), Low (<5%)"
+      - name: pricing_strategy
+        description: "Pricing strategy classification - Premium (>120% of list), Standard (80-120%), Discount (<80%)"
+
+  - name: fact_shipping_analysis
+    description: |
+      Shipping and geographic analysis fact table for supply chain and logistics analysis.
+      
+      This table focuses on shipping patterns, geographic analysis, and supply chain
+      performance. It's designed for logistics teams, supply chain analysts, and
+      international business teams who need to understand shipping routes, geographic
+      performance, and cross-border business patterns.
+      
+      **Grain:** One row per order line item (order_key + line_number)
+      **Use Cases:** Shipping analysis, geographic performance, supply chain optimization, international business
+      **Key Dimensions:** Geography, Time, Shipping Routes
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_key
+            - line_number
+    columns:
+      - name: shipping_fact_key
+        description: "Surrogate key for the shipping fact table - unique identifier for each shipping record"
+        tests:
+          - unique
+          - not_null
+      - name: order_key
+        description: "Foreign key to order dimension - links to the order being shipped"
+        tests:
+          - not_null
+      - name: line_number
+        description: "Line number within the order - sequence number for this line item"
+        tests:
+          - not_null
+      - name: supplier_key
+        description: "Foreign key to supplier dimension - identifies the supplier providing the product"
+      - name: customer_key
+        description: "Foreign key to customer dimension - identifies the customer receiving the shipment"
+      - name: order_date_key
+        description: "Foreign key to date dimension for order date - when the order was placed"
+      - name: ship_date_key
+        description: "Foreign key to date dimension for ship date - when the order was shipped"
+      - name: customer_nation_key
+        description: "Foreign key to geographic dimension - customer's nation identifier"
+      - name: supplier_nation_key
+        description: "Foreign key to geographic dimension - supplier's nation identifier"
+      - name: customer_nation_name
+        description: "Customer's nation name - destination country for shipping analysis"
+      - name: customer_region_name
+        description: "Customer's region name - destination region for regional shipping analysis"
+      - name: supplier_nation_name
+        description: "Supplier's nation name - origin country for shipping analysis"
+      - name: supplier_region_name
+        description: "Supplier's region name - origin region for regional shipping analysis"
+      - name: order_year
+        description: "Year when the order was placed - for order timing analysis"
+      - name: order_quarter
+        description: "Quarter when the order was placed - for quarterly order patterns"
+      - name: order_month
+        description: "Month when the order was placed - for monthly order patterns"
+      - name: order_month_name
+        description: "Month name when order was placed - for human-readable order reporting"
+      - name: order_quarter_name
+        description: "Quarter name when order was placed - for human-readable order reporting"
+      - name: order_day_type
+        description: "Order day type (Weekday/Weekend) - for order timing patterns"
+      - name: order_season
+        description: "Order season (Winter/Spring/Summer/Fall) - for seasonal order patterns"
+      - name: ship_year
+        description: "Year when the order was shipped - for shipping timing analysis"
+      - name: ship_quarter
+        description: "Quarter when the order was shipped - for quarterly shipping patterns"
+      - name: ship_month
+        description: "Month when the order was shipped - for monthly shipping patterns"
+      - name: ship_month_name
+        description: "Month name when order was shipped - for human-readable shipping reporting"
+      - name: ship_quarter_name
+        description: "Quarter name when order was shipped - for human-readable shipping reporting"
+      - name: ship_day_type
+        description: "Ship day type (Weekday/Weekend) - for shipping timing patterns"
+      - name: ship_season
+        description: "Ship season (Winter/Spring/Summer/Fall) - for seasonal shipping patterns"
+      - name: quantity
+        description: "Quantity shipped - volume measure for shipping analysis"
+      - name: gross_revenue
+        description: "Gross revenue for the shipment - for revenue analysis by shipping route"
+      - name: net_revenue
+        description: "Net revenue for the shipment - for net revenue analysis by shipping route"
+      - name: margin
+        description: "Profit margin for the shipment - for profitability analysis by shipping route"
+      - name: is_international_shipment
+        description: "Flag for international shipments - true when customer and supplier are in different nations"
+      - name: is_interregional_shipment
+        description: "Flag for inter-regional shipments - true when customer and supplier are in different regions"
+      - name: shipment_type
+        description: "Shipment type classification - Domestic (same nation), Intra-Regional (same region), Inter-Regional (different regions)"
+      - name: is_target_period
+        description: "Flag for target period (1995-1996) - for specific business period analysis"
+      - name: order_to_ship_season
+        description: "Season relationship between order and ship dates - Same Season or Cross Season"
+      - name: shipment_size_category
+        description: "Shipment size classification - Large (>100), Medium (51-100), Small (≤50)"
+      - name: profitability_flag
+        description: "Profitability flag - Profitable (margin > 0) or Loss Making (margin ≤ 0)" 

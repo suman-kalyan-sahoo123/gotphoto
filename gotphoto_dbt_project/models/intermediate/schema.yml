@@ -1,0 +1,102 @@
+version: 2
+
+models:
+  - name: int_lineitem_orders
+    description: "Line-item grain records enriched with order attributes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_key
+            - line_number
+    columns:
+      - name: order_key
+        description: "Order identifier"
+      - name: line_number
+        description: "Line sequence within the order"
+      - name: part_key
+        description: "Product identifier"
+      - name: supplier_key
+        description: "Supplier identifier"
+      - name: customer_key
+        description: "Customer placing the order"
+      - name: order_date
+        description: "Date the order was placed"
+      - name: order_status
+        description: "Order status code (O,F,P)"
+
+  - name: int_product_supplier_cost
+    description: "Product-supplier cost reference (part_key + supplier_key grain)"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - part_key
+            - supplier_key
+    columns:
+      - name: part_key
+        description: "Product identifier"
+      - name: supplier_key
+        description: "Supplier identifier"
+      - name: supply_cost
+        description: "Cost per unit from supplier"
+      - name: available_quantity
+        description: "Quantity available from supplier"
+
+  - name: int_line_pricing_calcs
+    description: "Pricing and cost metrics calculated at the order-line grain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_key
+            - line_number
+    columns:
+      - name: order_key
+        description: "Order identifier"
+      - name: line_number
+        description: "Line sequence within the order"
+      - name: gross_revenue
+        description: "Extended price (qty * unit price)"
+      - name: discount_amount
+        description: "Discount in monetary terms"
+      - name: net_revenue
+        description: "Revenue after discount, before tax"
+      - name: tax_amount
+        description: "Tax applied on the net revenue"
+      - name: supplier_cost
+        description: "Total supplier cost for the line"
+      - name: margin
+        description: "Profit margin in currency"
+      - name: margin_pct
+        description: "Margin as percentage of net revenue"
+      - name: average_selling_point
+        description: "Average selling price per unit (net_revenue / qty)"
+
+  - name: int_customer_geo
+    description: |
+      Customer dimension enriched with geography (nation, region) and a cleaned, lower-cased
+      market-segment field (`segment_code`). One row per `customer_key` — useful for joining
+      to fact models in the Revenue & Pricing mart or any other marts that need customer
+      geography context.
+    tests:
+      - unique:
+          column_name: customer_key
+    columns:
+      - name: customer_key
+        description: "Unique identifier for each customer"
+      - name: customer_name
+        description: "Full customer name"
+      - name: customer_address
+        description: "Mailing / street address of the customer"
+      - name: customer_phone
+        description: "Contact phone number"
+      - name: account_balance
+        description: "Current Snowflake sample account balance (may be negative)"
+      - name: segment_code
+        description: "Lower-cased market segment value (e.g. 'automobile', 'building')"
+      - name: nation_key
+        description: "Identifier of the nation the customer belongs to"
+      - name: nation_name
+        description: "Human-readable nation name"
+      - name: region_key
+        description: "Identifier of the region the nation belongs to"
+      - name: region_name
+        description: "Human-readable region name" 

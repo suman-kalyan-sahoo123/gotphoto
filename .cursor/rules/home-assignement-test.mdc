@@ -1,0 +1,42 @@
+---
+alwaysApply: false
+---
+# Senior Data Platform Engineer - Home Assignment Rules
+
+## dbt Project Development Guidelines
+
+### Code Quality Standards
+- Keep transformations simple and readable
+- Add clear, concise comments explaining business logic
+- Use descriptive model and column names
+- Follow dbt naming conventions (staging_, intermediate_, mart_)
+- never use select * always use column names
+
+### Edge Cases & Error Handling
+- Handle NULL values explicitly in transformations
+- Add data quality tests for critical fields
+- Consider timezone differences in date calculations
+- Validate data types and ranges
+- Test for empty datasets and missing sources
+
+### Best Practices
+- Use generic dbt tests (unique, not_null, accepted_values)
+- Create custom tests for business rules
+- Document models with descriptions and column definitions
+- Use macros for reusable logic
+- Implement incremental models for large datasets
+- Add source freshness checks
+
+### Docker & Infrastructure
+- Use non-root user for security
+- Mount volumes for development workflow
+- Keep container lightweight and focused
+- Handle connection failures gracefully
+- Use environment variables for configuration
+
+### Testing Strategy
+- Unit tests for individual models
+- Integration tests for end-to-end workflows
+- Data quality assertions at each layer
+- Performance testing for large transformations
+- Edge case validation (empty data, duplicates, invalid formats)

@@ -1,0 +1,70 @@
+
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: 'gotphoto_dbt_project'
+version: '1.0.0'
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'gotphoto_dbt_project'
+
+# These configurations specify where dbt should look for different types of files.
+# The `model-paths` config, for example, states that models in this project can be
+# found in the "models/" directory. You probably won't need to change these!
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:         # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+
+models:
+  gotphoto_dbt_project:
+    staging:
+      +materialized: table
+      +schema: staging
+      +persist_docs:
+        relation: true
+        columns: true
+    intermediate:
+      +materialized: table
+      +schema: intermediate
+      +persist_docs:
+        relation: true
+        columns: true
+    dimensions:
+      +materialized: table
+      +schema: dimensions
+      +persist_docs:
+        relation: true
+        columns: true
+    marts:
+      revenue_pricing:
+        +materialized: table
+        +schema: revenue_pricing_mart
+        +persist_docs:
+          relation: true
+          columns: true
+      customer_analytics:
+        +materialized: table
+        +schema: customer_analytics_mart
+        +persist_docs:
+          relation: true
+          columns: true
+      supplier_analytics:
+        +materialized: table
+        +schema: supplier_analytics_mart
+        +persist_docs:
+          relation: true
+          columns: true
+      order_performance:
+        +materialized: table
+        +schema: order_performance_mart
+        +persist_docs:
+          relation: true
+          columns: true

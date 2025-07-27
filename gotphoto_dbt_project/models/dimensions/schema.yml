@@ -1,0 +1,177 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: "Conformed customer dimension with geographic context"
+    tests:
+      - unique:
+          column_name: customer_key
+    columns:
+      - name: customer_key
+        description: "Primary key for customer"
+        tests:
+          - not_null
+      - name: customer_name
+        description: "Customer name"
+        tests:
+          - not_null
+      - name: customer_address
+        description: "Customer address"
+      - name: customer_phone
+        description: "Customer phone number"
+      - name: account_balance
+        description: "Customer account balance"
+      - name: market_segment
+        description: "Lower-cased market segment code"
+      - name: nation_key
+        description: "Foreign key to nation"
+      - name: nation_name
+        description: "Nation name"
+      - name: region_key
+        description: "Foreign key to region"
+      - name: region_name
+        description: "Region name"
+
+  - name: dim_product
+    description: "Conformed product dimension"
+    tests:
+      - unique:
+          column_name: part_key
+    columns:
+      - name: part_key
+        description: "Primary key for product"
+        tests:
+          - not_null
+      - name: part_name
+        description: "Product name"
+        tests:
+          - not_null
+      - name: manufacturer
+        description: "Product manufacturer"
+      - name: brand
+        description: "Product brand"
+      - name: part_type
+        description: "Product type/category"
+      - name: part_size
+        description: "Product size"
+      - name: container
+        description: "Product container type"
+      - name: retail_price
+        description: "Retail price of the product"
+      - name: part_comment
+        description: "Product comment"
+
+  - name: dim_supplier
+    description: "Conformed supplier dimension with geographic context"
+    tests:
+      - unique:
+          column_name: supplier_key
+    columns:
+      - name: supplier_key
+        description: "Primary key for supplier"
+        tests:
+          - not_null
+      - name: supplier_name
+        description: "Supplier name"
+        tests:
+          - not_null
+      - name: supplier_address
+        description: "Supplier address"
+      - name: supplier_phone
+        description: "Supplier phone number"
+      - name: account_balance
+        description: "Supplier account balance"
+      - name: supplier_comment
+        description: "Supplier comment"
+      - name: nation_key
+        description: "Foreign key to nation"
+      - name: nation_name
+        description: "Nation name"
+      - name: region_key
+        description: "Foreign key to region"
+      - name: region_name
+        description: "Region name"
+
+  - name: dim_geo
+    description: "Conformed geographic dimension consolidating nation and region data"
+    tests:
+      - unique:
+          column_name: nation_key
+    columns:
+      - name: nation_key
+        description: "Primary key for nation"
+        tests:
+          - not_null
+      - name: nation_name
+        description: "Nation name"
+        tests:
+          - not_null
+      - name: nation_comment
+        description: "Nation comment"
+      - name: region_key
+        description: "Foreign key to region"
+        tests:
+          - not_null
+      - name: region_name
+        description: "Region name"
+        tests:
+          - not_null
+      - name: region_comment
+        description: "Region comment"
+
+  - name: dim_date
+    description: "Conformed date dimension with comprehensive time attributes"
+    tests:
+      - unique:
+          column_name: date_key
+    columns:
+      - name: date_key
+        description: "Primary key for date (YYYY-MM-DD format)"
+        tests:
+          - not_null
+      - name: full_date
+        description: "Full date value"
+        tests:
+          - not_null
+      - name: year
+        description: "Year (YYYY)"
+        tests:
+          - not_null
+      - name: month
+        description: "Month (1-12)"
+        tests:
+          - not_null
+      - name: day
+        description: "Day of month (1-31)"
+        tests:
+          - not_null
+      - name: day_of_week
+        description: "Day of week (1-7, 1=Sunday)"
+      - name: day_of_year
+        description: "Day of year (1-366)"
+      - name: week_of_year
+        description: "Week of year (1-53)"
+      - name: quarter
+        description: "Quarter (1-4)"
+      - name: day_type
+        description: "Weekday or Weekend"
+      - name: season
+        description: "Season (Winter, Spring, Summer, Fall)"
+      - name: month_name
+        description: "Full month name"
+      - name: day_name
+        description: "Full day name"
+      - name: quarter_name
+        description: "Quarter name (Q1, Q2, Q3, Q4)"
+      - name: year_month
+        description: "Year-Month format (YYYY-MM)"
+      - name: year_quarter
+        description: "Year-Quarter format (YYYY-Q#)"
+      - name: is_new_year
+        description: "Boolean flag for New Year's Day"
+      - name: is_year_end
+        description: "Boolean flag for year end"
+      - name: is_month_start
+        description: "Boolean flag for month start"
+      - name: is_month_end
+        description: "Boolean flag for month end" 

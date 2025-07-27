@@ -1,0 +1,313 @@
+version: 2
+
+models:
+  - name: fact_supplier_performance
+    description: |
+      Line-item grain supplier performance fact table for detailed supplier analysis.
+
+      This table provides detailed supplier performance metrics at the order line level,
+      including cost analysis, margin calculations, and supplier-specific performance indicators.
+      It's designed for supplier analysts, procurement teams, and business intelligence
+      teams who need to understand supplier performance at a granular level.
+
+      **Grain:** One row per supplier-order-line combination (supplier_key + order_key + line_number)
+      **Use Cases:** Supplier cost analysis, margin analysis, supplier performance tracking
+      **Key Dimensions:** Supplier, Product, Date, Order Attributes
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - supplier_key
+            - order_key
+            - line_number
+    columns:
+      - name: supplier_performance_fact_key
+        description: "Surrogate key for the supplier performance fact table - unique identifier for each supplier-order-line"
+        tests:
+          - unique
+          - not_null
+      - name: supplier_key
+        description: "Foreign key to supplier dimension - identifies the supplier"
+        tests:
+          - not_null
+      - name: order_key
+        description: "Foreign key to order dimension - identifies the order"
+        tests:
+          - not_null
+      - name: line_number
+        description: "Line number within the order - sequence number for this line item"
+        tests:
+          - not_null
+      - name: part_key
+        description: "Foreign key to product dimension - identifies the product being supplied"
+      - name: order_date_key
+        description: "Foreign key to date dimension for order date - when the order was placed"
+      - name: ship_date_key
+        description: "Foreign key to date dimension for ship date - when the order was shipped"
+      - name: nation_key
+        description: "Foreign key to geographic dimension - supplier's nation identifier"
+      - name: region_key
+        description: "Foreign key to geographic dimension - supplier's region identifier"
+
+      # Supplier attributes
+      - name: supplier_name
+        description: "Supplier name - for supplier identification and reporting"
+      - name: supplier_address
+        description: "Supplier address - for geographic analysis"
+      - name: supplier_phone
+        description: "Supplier phone number - for supplier contact information"
+      - name: account_balance
+        description: "Supplier account balance - for financial analysis"
+      - name: supplier_nation
+        description: "Supplier's nation name - for geographic analysis"
+      - name: supplier_region
+        description: "Supplier's region name - for regional analysis"
+
+      # Product attributes
+      - name: part_name
+        description: "Product name - for product reporting and analysis"
+      - name: manufacturer
+        description: "Product manufacturer - for manufacturer performance analysis"
+      - name: brand
+        description: "Product brand - for brand performance analysis"
+      - name: part_type
+        description: "Product type/category - for product category analysis"
+      - name: part_size
+        description: "Product size - for size-based analysis"
+      - name: container
+        description: "Product container type - for packaging analysis"
+      - name: list_price
+        description: "List price of the product - for pricing analysis"
+
+      # Order attributes
+      - name: order_status
+        description: "Order status code (O,F,P) - for order status analysis"
+      - name: order_priority
+        description: "Order priority code - for priority analysis"
+
+      # Time attributes
+      - name: order_year
+        description: "Year when the order was placed - for time-based analysis"
+      - name: order_quarter
+        description: "Quarter when the order was placed - for quarterly analysis"
+      - name: order_month
+        description: "Month when the order was placed - for monthly analysis"
+      - name: order_month_name
+        description: "Month name when order was placed - for human-readable reporting"
+      - name: order_quarter_name
+        description: "Quarter name when order was placed - for human-readable reporting"
+      - name: order_day_type
+        description: "Order day type (Weekday/Weekend) - for timing patterns"
+      - name: order_season
+        description: "Order season (Winter/Spring/Summer/Fall) - for seasonal patterns"
+      - name: ship_year
+        description: "Year when the order was shipped - for shipping timing analysis"
+      - name: ship_quarter
+        description: "Quarter when the order was shipped - for shipping quarterly analysis"
+      - name: ship_month
+        description: "Month when the order was shipped - for shipping monthly analysis"
+      - name: ship_month_name
+        description: "Month name when order was shipped - for human-readable reporting"
+      - name: ship_quarter_name
+        description: "Quarter name when order was shipped - for human-readable reporting"
+      - name: ship_day_type
+        description: "Ship day type (Weekday/Weekend) - for shipping timing patterns"
+      - name: ship_season
+        description: "Ship season (Winter/Spring/Summer/Fall) - for seasonal shipping patterns"
+
+      # Core metrics
+      - name: quantity
+        description: "Quantity of units supplied - primary volume measure"
+      - name: gross_revenue
+        description: "Gross revenue before discounts - list price * quantity"
+      - name: discount_amount
+        description: "Discount amount applied to the line item"
+      - name: net_revenue
+        description: "Net revenue after discounts - gross revenue - discount amount"
+      - name: tax_amount
+        description: "Tax amount for the line item"
+      - name: available_quantity
+        description: "Quantity available from supplier - for availability analysis"
+      - name: supply_cost
+        description: "Cost per unit from supplier - for cost analysis"
+      - name: total_supplier_cost
+        description: "Total cost from supplier - supply cost * quantity"
+      - name: margin
+        description: "Profit margin in currency - net revenue - supplier cost"
+      - name: margin_pct
+        description: "Margin as percentage of net revenue - margin / net revenue"
+
+      # Calculated supplier metrics
+      - name: unit_price
+        description: "Price per unit - gross revenue / quantity"
+      - name: net_unit_price
+        description: "Net price per unit after discounts - net revenue / quantity"
+      - name: unit_cost
+        description: "Cost per unit from supplier - supplier cost / quantity"
+      - name: margin_per_unit
+        description: "Margin generated per unit - margin / quantity"
+      - name: markup_ratio
+        description: "Markup ratio - gross revenue / supply cost"
+      - name: utilization_rate
+        description: "Utilization rate - quantity / available quantity"
+
+      # Performance flags
+      - name: is_returned
+        description: "Flag indicating if the line item was returned"
+      - name: is_filled
+        description: "Flag indicating if the line item was filled"
+      - name: margin_category
+        description: "Margin category classification - High Margin (>30%), Medium Margin (15-30%), Low Margin (<15%)"
+      - name: order_size_category
+        description: "Order size classification - Large (>100), Medium (51-100), Small (≤50)"
+      - name: markup_category
+        description: "Markup category classification - High Markup (<50% cost), Medium Markup (50-70% cost), Low Markup (>70% cost)"
+      - name: availability_category
+        description: "Availability category classification - High (>2x needed), Medium (1-2x needed), Low (<1x needed)"
+
+  - name: fact_supplier_summary
+    description: |
+      Supplier-level summary fact table for supplier analytics and relationship analysis.
+
+      This table provides supplier-level aggregations and performance metrics for supplier
+      relationship management, procurement analysis, and supplier performance evaluation.
+      It's designed for procurement teams, supplier relationship managers, and business
+      intelligence teams who need to understand supplier performance at an aggregate level.
+
+      **Grain:** One row per supplier (supplier_key)
+      **Use Cases:** Supplier relationship management, procurement analysis, supplier performance evaluation
+      **Key Dimensions:** Supplier, Date, Geography, Performance Metrics
+    tests:
+      - unique:
+          column_name: supplier_key
+          config:
+            alias: unique_supplier_summary_supplier_key
+    columns:
+      - name: supplier_summary_fact_key
+        description: "Surrogate key for the supplier summary fact table - unique identifier for each supplier"
+        tests:
+          - unique
+          - not_null
+      - name: supplier_key
+        description: "Primary key for the supplier - links to supplier dimension"
+        tests:
+          - not_null
+      - name: nation_key
+        description: "Foreign key to geographic dimension - supplier's nation identifier"
+      - name: region_key
+        description: "Foreign key to geographic dimension - supplier's region identifier"
+      - name: first_order_date_key
+        description: "Foreign key to date dimension for first order date - when supplier first provided service"
+      - name: last_order_date_key
+        description: "Foreign key to date dimension for last order date - when supplier last provided service"
+
+      # Supplier attributes
+      - name: supplier_name
+        description: "Supplier name - for supplier identification and reporting"
+      - name: supplier_address
+        description: "Supplier address - for geographic analysis"
+      - name: supplier_phone
+        description: "Supplier phone number - for supplier contact information"
+      - name: account_balance
+        description: "Supplier account balance - for financial analysis"
+      - name: supplier_nation
+        description: "Supplier's nation name - for geographic analysis"
+      - name: supplier_region
+        description: "Supplier's region name - for regional analysis"
+
+      # Supplier performance metrics
+      - name: total_orders
+        description: "Total number of orders supplied by this supplier"
+      - name: total_line_items
+        description: "Total number of line items supplied by this supplier"
+      - name: total_quantity_supplied
+        description: "Total quantity supplied by this supplier - primary volume measure"
+      - name: total_gross_revenue
+        description: "Total gross revenue generated by this supplier - before discounts"
+      - name: total_discount_amount
+        description: "Total discount amount applied to this supplier's orders"
+      - name: total_net_revenue
+        description: "Total net revenue generated by this supplier - after discounts"
+      - name: total_tax_amount
+        description: "Total tax amount for this supplier's orders"
+      - name: unique_products_supplied
+        description: "Number of unique products supplied by this supplier"
+      - name: unique_customers_served
+        description: "Number of unique customers served by this supplier"
+      - name: total_returned_lines
+        description: "Number of returned line items from this supplier"
+      - name: total_filled_lines
+        description: "Number of filled line items from this supplier"
+      - name: first_order_date
+        description: "Date of first order from this supplier"
+      - name: last_order_date
+        description: "Date of last order from this supplier"
+      - name: avg_quantity_per_line
+        description: "Average quantity per line item for this supplier"
+      - name: avg_revenue_per_line
+        description: "Average revenue per line item for this supplier"
+      - name: years_active
+        description: "Number of years this supplier has been active"
+      - name: months_active
+        description: "Number of months this supplier has been active"
+
+      # Supplier cost metrics
+      - name: total_products_available
+        description: "Total number of products available from this supplier"
+      - name: total_available_quantity
+        description: "Total quantity available from this supplier"
+      - name: avg_supply_cost
+        description: "Average supply cost from this supplier"
+      - name: min_supply_cost
+        description: "Minimum supply cost from this supplier"
+      - name: max_supply_cost
+        description: "Maximum supply cost from this supplier"
+      - name: total_inventory_value
+        description: "Total inventory value available from this supplier"
+
+      # Calculated supplier metrics
+      - name: avg_order_value
+        description: "Average order value for this supplier - total_gross_revenue / total_orders"
+      - name: avg_order_quantity
+        description: "Average order quantity for this supplier - total_quantity_supplied / total_orders"
+      - name: avg_quantity_per_line_item
+        description: "Average quantity per line item - total_quantity_supplied / total_line_items"
+      - name: avg_revenue_per_line_item
+        description: "Average revenue per line item - total_gross_revenue / total_line_items"
+      - name: supplier_discount_rate
+        description: "Discount rate for this supplier - total_discount_amount / total_gross_revenue"
+      - name: supplier_return_rate
+        description: "Return rate for this supplier - total_returned_lines / total_line_items"
+      - name: supplier_fill_rate
+        description: "Fill rate for this supplier - total_filled_lines / total_line_items"
+      - name: orders_per_year
+        description: "Orders per year for this supplier - total_orders / years_active"
+      - name: revenue_per_year
+        description: "Revenue per year for this supplier - total_gross_revenue / years_active"
+      - name: product_utilization_rate
+        description: "Product utilization rate - unique_products_supplied / total_products_available"
+
+      # Supplier value categories
+      - name: supplier_tier
+        description: "Supplier tier classification - Platinum (>1M), Gold (500k-1M), Silver (200k-500k), Bronze (100k-200k), Standard (<100k)"
+      - name: volume_tier
+        description: "Volume tier classification - High Volume (>5000), Medium Volume (2000-5000), Low Volume (500-2000), Minimal Volume (<500)"
+      - name: frequency_tier
+        description: "Frequency tier classification - Frequent (>50 orders), Regular (20-50 orders), Occasional (10-20 orders), Infrequent (<10 orders)"
+      - name: portfolio_tier
+        description: "Portfolio tier classification - Diverse (>20 products), Varied (10-20 products), Moderate (5-10 products), Limited (<5 products)"
+      - name: customer_reach_tier
+        description: "Customer reach tier classification - Wide (>20 customers), Moderate (10-20 customers), Limited (5-10 customers), Narrow (<5 customers)"
+
+      # Business logic flags
+      - name: is_high_volume_supplier
+        description: "Flag for high volume suppliers (>1000 units supplied)"
+      - name: is_high_value_supplier
+        description: "Flag for high value suppliers (>500k revenue)"
+      - name: has_high_return_rate
+        description: "Flag for suppliers with high return rate (>10%)"
+      - name: has_low_fill_rate
+        description: "Flag for suppliers with low fill rate (<80%)"
+      - name: is_long_term_supplier
+        description: "Flag for long-term suppliers (>2 years active)"
+      - name: has_broad_customer_base
+        description: "Flag for suppliers with broad customer base (>10 customers)" 

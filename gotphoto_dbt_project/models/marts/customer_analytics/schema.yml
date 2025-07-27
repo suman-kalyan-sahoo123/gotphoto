@@ -1,0 +1,413 @@
+version: 2
+
+models:
+  - name: fact_customer_orders
+    description: |
+      Order-level fact table for customer analytics addressing TPC-H Q18 business question.
+      
+      This table provides order-level analysis for customer behavior, including large volume
+      order identification, order complexity analysis, and customer performance metrics.
+      It's designed for order analysts, customer success teams, and business intelligence
+      teams who need to understand customer ordering patterns and identify high-value orders.
+      
+      **Grain:** One row per order (order_key)
+      **Use Cases:** Large volume order analysis, order complexity analysis, customer order patterns
+      **Key Dimensions:** Customer, Date, Geography, Order Attributes
+    tests:
+      - unique:
+          column_name: order_key
+          config:
+            alias: unique_customer_orders_order_key
+    columns:
+      - name: customer_order_fact_key
+        description: "Surrogate key for the customer order fact table - unique identifier for each order"
+        tests:
+          - unique
+          - not_null
+      - name: order_key
+        description: "Primary key for the order - links to order dimension"
+        tests:
+          - not_null
+      - name: customer_key
+        description: "Foreign key to customer dimension - identifies the customer"
+        tests:
+          - not_null
+      - name: order_date_key
+        description: "Foreign key to date dimension for order date - when the order was placed"
+      - name: ship_date_key
+        description: "Foreign key to date dimension for ship date - when the order was shipped"
+      - name: nation_key
+        description: "Foreign key to geographic dimension - customer's nation identifier"
+      - name: region_key
+        description: "Foreign key to geographic dimension - customer's region identifier"
+      
+      # Customer attributes
+      - name: customer_name
+        description: "Customer name - for customer identification and reporting"
+      - name: customer_address
+        description: "Customer address - for geographic analysis"
+      - name: customer_phone
+        description: "Customer phone number - for customer contact information"
+      - name: account_balance
+        description: "Customer account balance - for financial analysis"
+      - name: customer_segment
+        description: "Customer market segment (e.g., automobile, building) - for segment analysis"
+      - name: customer_nation
+        description: "Customer's nation name - for geographic analysis"
+      - name: customer_region
+        description: "Customer's region name - for regional analysis"
+      
+      # Order attributes
+      - name: order_status
+        description: "Order status code (O,F,P) - for order status analysis"
+      - name: order_priority
+        description: "Order priority code - for priority analysis"
+      - name: clerk
+        description: "Clerk ID who handled the order - for employee performance analysis"
+      - name: ship_priority
+        description: "Shipping priority - for shipping analysis"
+      
+      # Time attributes
+      - name: order_year
+        description: "Year when the order was placed - for time-based analysis"
+      - name: order_quarter
+        description: "Quarter when the order was placed - for quarterly analysis"
+      - name: order_month
+        description: "Month when the order was placed - for monthly analysis"
+      - name: order_month_name
+        description: "Month name when order was placed - for human-readable reporting"
+      - name: order_quarter_name
+        description: "Quarter name when order was placed - for human-readable reporting"
+      - name: order_day_type
+        description: "Order day type (Weekday/Weekend) - for timing patterns"
+      - name: order_season
+        description: "Order season (Winter/Spring/Summer/Fall) - for seasonal patterns"
+      - name: ship_year
+        description: "Year when the order was shipped - for shipping timing analysis"
+      - name: ship_quarter
+        description: "Quarter when the order was shipped - for shipping quarterly analysis"
+      - name: ship_month
+        description: "Month when the order was shipped - for shipping monthly analysis"
+      - name: ship_month_name
+        description: "Month name when order was shipped - for human-readable reporting"
+      - name: ship_quarter_name
+        description: "Quarter name when order was shipped - for human-readable reporting"
+      - name: ship_day_type
+        description: "Ship day type (Weekday/Weekend) - for shipping timing patterns"
+      - name: ship_season
+        description: "Ship season (Winter/Spring/Summer/Fall) - for seasonal shipping patterns"
+      
+      # Order metrics
+      - name: line_item_count
+        description: "Number of line items in the order - for order complexity analysis"
+      - name: total_quantity
+        description: "Total quantity ordered across all line items - primary volume measure"
+      - name: total_gross_revenue
+        description: "Total gross revenue for the order - before discounts"
+      - name: total_discount_amount
+        description: "Total discount amount applied to the order"
+      - name: total_net_revenue
+        description: "Total net revenue for the order - after discounts"
+      - name: total_tax_amount
+        description: "Total tax amount for the order"
+      - name: avg_line_quantity
+        description: "Average quantity per line item - for line item analysis"
+      - name: avg_line_revenue
+        description: "Average revenue per line item - for line item analysis"
+      - name: unique_products
+        description: "Number of unique products in the order - for product diversity analysis"
+      - name: unique_suppliers
+        description: "Number of unique suppliers for the order - for supplier diversity analysis"
+      - name: returned_lines
+        description: "Number of returned line items - for return analysis"
+      - name: filled_lines
+        description: "Number of filled line items - for fulfillment analysis"
+      
+      # Calculated metrics
+      - name: order_discount_rate
+        description: "Discount rate for the order - total_discount_amount / total_gross_revenue"
+      - name: avg_quantity_per_line
+        description: "Average quantity per line item - total_quantity / line_item_count"
+      - name: avg_revenue_per_line
+        description: "Average revenue per line item - total_gross_revenue / line_item_count"
+      - name: return_rate
+        description: "Return rate for the order - returned_lines / line_item_count"
+      - name: fill_rate
+        description: "Fill rate for the order - filled_lines / line_item_count"
+      
+      # Customer analysis flags
+      - name: volume_category
+        description: "Volume classification - Large Volume (>300), Medium Volume (101-300), Small Volume (≤100)"
+      - name: value_category
+        description: "Value classification - High Value (>100k), Medium Value (50k-100k), Low Value (<50k)"
+      - name: order_complexity
+        description: "Order complexity classification - Complex (>10 lines), Standard (6-10 lines), Simple (≤5 lines)"
+      - name: product_diversity
+        description: "Product diversity classification - Multi-Product (>1 product), Single Product (1 product)"
+      - name: supplier_diversity
+        description: "Supplier diversity classification - Multi-Supplier (>1 supplier), Single Supplier (1 supplier)"
+      
+      # Business logic flags
+      - name: is_large_volume_order
+        description: "Flag for large volume orders (>300 quantity)"
+      - name: has_high_returns
+        description: "Flag for orders with high return rate (>10%)"
+      - name: has_low_fill_rate
+        description: "Flag for orders with low fill rate (<80%)"
+
+  - name: fact_customer_summary
+    description: |
+      Customer-level summary fact table for customer analytics and lifetime value analysis.
+
+      This table provides customer-level aggregations and performance metrics for customer
+      relationship management, customer success analysis, and customer lifetime value
+      calculations. It's designed for customer success teams, marketing teams, and
+      business intelligence teams who need to understand customer behavior at an aggregate level.
+
+      **Grain:** One row per customer (customer_key)
+      **Use Cases:** Customer relationship management, customer success analysis, customer lifetime value
+      **Key Dimensions:** Customer, Date, Geography, Performance Metrics
+    tests:
+      - unique:
+          column_name: customer_key
+          config:
+            alias: unique_customer_summary_customer_key
+    columns:
+      - name: customer_summary_fact_key
+        description: "Surrogate key for the customer summary fact table - unique identifier for each customer"
+        tests:
+          - unique
+          - not_null
+      - name: customer_key
+        description: "Primary key for the customer - links to customer dimension"
+        tests:
+          - not_null
+      - name: order_date_key
+        description: "Foreign key to date dimension for first order date - when the customer first ordered"
+      - name: nation_key
+        description: "Foreign key to geographic dimension - customer's nation identifier"
+      - name: region_key
+        description: "Foreign key to geographic dimension - customer's region identifier"
+
+      # Customer attributes
+      - name: customer_name
+        description: "Customer name - for customer identification and reporting"
+      - name: customer_address
+        description: "Customer address - for geographic analysis"
+      - name: customer_phone
+        description: "Customer phone number - for customer contact information"
+      - name: account_balance
+        description: "Customer account balance - for financial analysis"
+      - name: customer_segment
+        description: "Customer market segment (e.g., automobile, building) - for segment analysis"
+      - name: customer_nation
+        description: "Customer's nation name - for geographic analysis"
+      - name: customer_region
+        description: "Customer's region name - for regional analysis"
+
+      # Time attributes
+      - name: first_order_year
+        description: "Year when the customer first ordered - for customer acquisition analysis"
+      - name: first_order_quarter
+        description: "Quarter when the customer first ordered - for quarterly acquisition analysis"
+      - name: first_order_month
+        description: "Month when the customer first ordered - for monthly acquisition analysis"
+      - name: first_order_month_name
+        description: "Month name when customer first ordered - for human-readable reporting"
+      - name: first_order_quarter_name
+        description: "Quarter name when customer first ordered - for human-readable reporting"
+      - name: first_order_day_type
+        description: "First order day type (Weekday/Weekend) - for acquisition timing patterns"
+      - name: first_order_season
+        description: "First order season (Winter/Spring/Summer/Fall) - for seasonal acquisition patterns"
+      - name: last_order_year
+        description: "Year when the customer last ordered - for customer retention analysis"
+      - name: last_order_quarter
+        description: "Quarter when the customer last ordered - for quarterly retention analysis"
+      - name: last_order_month
+        description: "Month when the customer last ordered - for monthly retention analysis"
+      - name: last_order_month_name
+        description: "Month name when customer last ordered - for human-readable reporting"
+      - name: last_order_quarter_name
+        description: "Quarter name when customer last ordered - for human-readable reporting"
+      - name: last_order_day_type
+        description: "Last order day type (Weekday/Weekend) - for retention timing patterns"
+      - name: last_order_season
+        description: "Last order season (Winter/Spring/Summer/Fall) - for seasonal retention patterns"
+
+      # Customer metrics
+      - name: total_orders
+        description: "Total number of orders placed by the customer - primary frequency measure"
+      - name: total_line_items
+        description: "Total number of line items across all orders - for order complexity analysis"
+      - name: total_quantity
+        description: "Total quantity ordered across all orders - primary volume measure"
+      - name: total_gross_revenue
+        description: "Total gross revenue from the customer - before discounts"
+      - name: total_discount_amount
+        description: "Total discount amount given to the customer"
+      - name: total_net_revenue
+        description: "Total net revenue from the customer - after discounts"
+      - name: total_tax_amount
+        description: "Total tax amount from the customer"
+      - name: avg_order_value
+        description: "Average order value for the customer - total_net_revenue / total_orders"
+      - name: avg_line_items_per_order
+        description: "Average line items per order - total_line_items / total_orders"
+      - name: avg_quantity_per_order
+        description: "Average quantity per order - total_quantity / total_orders"
+      - name: unique_products_purchased
+        description: "Number of unique products purchased by the customer - for product diversity analysis"
+      - name: unique_suppliers_used
+        description: "Number of unique suppliers used by the customer - for supplier diversity analysis"
+      - name: total_returned_lines
+        description: "Total number of returned line items - for return analysis"
+      - name: total_filled_lines
+        description: "Total number of filled line items - for fulfillment analysis"
+      - name: customer_lifespan_days
+        description: "Days between first and last order - customer relationship duration"
+      - name: avg_days_between_orders
+        description: "Average days between orders - customer engagement frequency"
+
+      # Calculated metrics
+      - name: customer_return_rate
+        description: "Customer return rate - total_returned_lines / total_line_items"
+      - name: customer_fill_rate
+        description: "Customer fill rate - total_filled_lines / total_line_items"
+      - name: customer_discount_rate
+        description: "Customer discount rate - total_discount_amount / total_gross_revenue"
+      - name: orders_per_year
+        description: "Orders per year - total_orders / (customer_lifespan_days / 365.25)"
+      - name: revenue_per_year
+        description: "Revenue per year - total_net_revenue / (customer_lifespan_days / 365.25)"
+
+      # Customer value categories
+      - name: volume_category
+        description: "Volume classification - Large Volume (>1000), Medium Volume (100-1000), Small Volume (<100)"
+      - name: value_category
+        description: "Value classification - High Value (>50k), Medium Value (10k-50k), Low Value (<10k)"
+      - name: frequency_category
+        description: "Frequency classification - High Frequency (>10 orders), Medium Frequency (3-10 orders), Low Frequency (1-2 orders)"
+      - name: loyalty_category
+        description: "Loyalty classification - Long Term (>365 days), Medium Term (90-365 days), Short Term (<90 days)"
+
+      # Customer health indicators
+      - name: is_active_customer
+        description: "Flag for active customers (ordered in last 90 days)"
+      - name: is_high_value_customer
+        description: "Flag for high value customers (>50k total revenue)"
+      - name: is_frequent_customer
+        description: "Flag for frequent customers (>10 total orders)"
+      - name: is_loyal_customer
+        description: "Flag for loyal customers (>365 days relationship)"
+      - name: is_at_risk_customer
+        description: "Flag for at-risk customers (no order in last 180 days)"
+      - name: is_churned_customer
+        description: "Flag for churned customers (no order in last 365 days)"
+
+  - name: customer_lifetime_value
+    description: |
+      Customer Lifetime Value (CLV) calculation using RFM analysis and predictive modeling.
+
+      This Python model calculates comprehensive CLV metrics for each customer including
+      RFM (Recency, Frequency, Monetary) scores, historical CLV calculations, predictive
+      CLV estimates, and customer segmentation. It uses advanced analytics to provide
+      customer health indicators and value predictions for strategic decision-making.
+
+      **Grain:** One row per customer (customer_key)
+      **Use Cases:** Customer segmentation, retention strategies, marketing campaigns, strategic planning
+      **Key Dimensions:** Customer, RFM Scores, CLV Metrics, Predictive Analytics
+    tests:
+      - unique:
+          column_name: customer_key
+          config:
+            alias: unique_customer_lifetime_value_customer_key
+    columns:
+      - name: customer_key
+        description: "Primary key for the customer - unique identifier"
+        tests:
+          - not_null
+      - name: customer_name
+        description: "Customer name - for customer identification and reporting"
+      - name: nation_name
+        description: "Customer's nation name - for geographic analysis"
+      - name: region_name
+        description: "Customer's region name - for regional analysis"
+      - name: market_segment
+        description: "Customer market segment (e.g., automobile, building) - for segment analysis"
+      - name: account_balance
+        description: "Customer account balance - for financial analysis"
+
+      # Order history
+      - name: first_order_date
+        description: "Date of customer's first order - for customer acquisition analysis"
+      - name: last_order_date
+        description: "Date of customer's last order - for customer retention analysis"
+      - name: order_count
+        description: "Total number of orders placed by the customer"
+      - name: total_revenue
+        description: "Total revenue generated from the customer"
+      - name: avg_order_value
+        description: "Average order value for the customer"
+      - name: customer_lifespan_days
+        description: "Days between first and last order - customer relationship duration"
+
+      # Purchase behavior
+      - name: purchase_frequency_yearly
+        description: "Average number of orders per year - purchase frequency measure"
+      - name: purchase_frequency_days
+        description: "Average days between orders - purchase frequency measure"
+      - name: recency_days
+        description: "Days since last order - recency measure for RFM analysis"
+      - name: frequency
+        description: "Total number of orders - frequency measure for RFM analysis"
+      - name: monetary_value
+        description: "Total monetary value - monetary measure for RFM analysis"
+
+      # RFM scores
+      - name: recency_score
+        description: "Recency score (1-5, 5 being most recent) - for RFM analysis"
+      - name: frequency_score
+        description: "Frequency score (1-5, 5 being most frequent) - for RFM analysis"
+      - name: monetary_score
+        description: "Monetary score (1-5, 5 being highest value) - for RFM analysis"
+      - name: rfm_score
+        description: "Combined RFM score (recency*100 + frequency*10 + monetary) - for RFM analysis"
+
+      # Customer segmentation
+      - name: customer_segment
+        description: "Customer segment based on RFM analysis - Champions, Loyal Customers, At Risk, etc."
+      - name: clv_category
+        description: "CLV category - Low Value, Medium Value, High Value, Premium Value"
+      - name: value_tier
+        description: "Customer value tier - Bronze, Silver, Gold, Platinum"
+      - name: health_score
+        description: "Customer health score (0-5) - weighted combination of RFM scores"
+
+      # CLV calculations
+      - name: historical_clv
+        description: "Historical Customer Lifetime Value - total revenue to date"
+      - name: predicted_clv
+        description: "Predicted Customer Lifetime Value - future value estimate based on behavior patterns"
+      - name: churn_probability
+        description: "Probability of customer churn (0-1) - based on recency and behavior patterns"
+
+      # Business metrics
+      - name: estimated_cac
+        description: "Estimated Customer Acquisition Cost - based on market segment"
+      - name: customer_profitability
+        description: "Customer profitability - total revenue minus estimated acquisition cost"
+      - name: roi
+        description: "Return on Investment - (revenue - acquisition cost) / acquisition cost"
+
+      # Business intelligence flags
+      - name: is_active
+        description: "Flag for active customers (ordered in last 90 days)"
+      - name: is_high_value
+        description: "Flag for high value customers (High Value or Premium Value CLV category)"
+      - name: is_at_risk
+        description: "Flag for at-risk customers (At Risk Customers or Lost Customers segment)"
+      - name: is_champion
+        description: "Flag for champion customers (Champions segment)"
+      - name: is_loyal
+        description: "Flag for loyal customers (Loyal Customers segment)" 

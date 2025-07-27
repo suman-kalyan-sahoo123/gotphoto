@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  dbt:
+    build: .
+    container_name: dbt-cli
+    platform: linux/amd64
+    env_file:
+      - .env
+    environment:
+      - DBT_PROFILES_DIR=/home/dbt/.dbt
+    stdin_open: true
+    tty: true
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../gotphoto_dbt_project:/app/dbt_project
+      - ../gotphoto_dbt_project/profiles:/home/dbt/.dbt
+    working_dir: /app/dbt_project
+    command: ["tail", "-f", "/dev/null"] 

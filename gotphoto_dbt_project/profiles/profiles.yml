@@ -1,0 +1,14 @@
+gotphoto_dbt_project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "ANBZLMX-TB05856"
+      user: "gotphoto_etl_user"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: "gotphoto_etl_role"
+      warehouse: "GOTPHOTO_WH"
+      database: "GOTPHOTO_ANALYTICS_DB"
+      schema: "STAGING"
+      threads: 1
+      client_session_keep_alive: false 

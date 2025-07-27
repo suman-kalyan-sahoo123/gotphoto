@@ -1,0 +1,425 @@
+version: 2
+
+models:
+  - name: fact_order_fulfillment
+    description: |
+      Line-item grain order fulfillment fact table for detailed operational efficiency analysis.
+
+      This table provides detailed order fulfillment metrics at the order line level,
+      including time-based performance indicators, shipping efficiency, and operational
+      quality metrics. It's designed for operations teams, fulfillment managers, and
+      business intelligence teams who need to understand order fulfillment performance
+      at a granular level.
+
+      **Grain:** One row per order line item (order_key + line_number)
+      **Use Cases:** Order fulfillment analysis, shipping performance tracking, operational efficiency
+      **Key Dimensions:** Customer, Supplier, Product, Date, Order Attributes
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_key
+            - line_number
+    columns:
+      - name: order_fulfillment_fact_key
+        description: "Surrogate key for the order fulfillment fact table - unique identifier for each order line"
+        tests:
+          - unique
+          - not_null
+      - name: order_key
+        description: "Foreign key to order dimension - identifies the order"
+        tests:
+          - not_null
+      - name: line_number
+        description: "Line number within the order - sequence number for this line item"
+        tests:
+          - not_null
+      - name: part_key
+        description: "Foreign key to product dimension - identifies the product being ordered"
+      - name: supplier_key
+        description: "Foreign key to supplier dimension - identifies the supplier"
+      - name: customer_key
+        description: "Foreign key to customer dimension - identifies the customer"
+      - name: order_date_key
+        description: "Foreign key to date dimension for order date - when the order was placed"
+      - name: ship_date_key
+        description: "Foreign key to date dimension for ship date - when the order was shipped"
+      - name: commit_date_key
+        description: "Foreign key to date dimension for commit date - when the order was committed"
+      - name: receipt_date_key
+        description: "Foreign key to date dimension for receipt date - when the order was received"
+      - name: customer_nation_key
+        description: "Foreign key to geographic dimension - customer's nation identifier"
+      - name: supplier_nation_key
+        description: "Foreign key to geographic dimension - supplier's nation identifier"
+
+      # Customer attributes
+      - name: customer_name
+        description: "Customer name - for customer identification and reporting"
+      - name: customer_address
+        description: "Customer address - for geographic analysis"
+      - name: customer_phone
+        description: "Customer phone number - for customer contact information"
+      - name: account_balance
+        description: "Customer account balance - for financial analysis"
+      - name: customer_segment
+        description: "Customer market segment (e.g., automobile, building) - for segment analysis"
+      - name: customer_nation
+        description: "Customer's nation name - for geographic analysis"
+      - name: customer_region
+        description: "Customer's region name - for regional analysis"
+
+      # Supplier attributes
+      - name: supplier_name
+        description: "Supplier name - for supplier identification and reporting"
+      - name: supplier_address
+        description: "Supplier address - for geographic analysis"
+      - name: supplier_phone
+        description: "Supplier phone number - for supplier contact information"
+      - name: supplier_account_balance
+        description: "Supplier account balance - for financial analysis"
+      - name: supplier_nation
+        description: "Supplier's nation name - for geographic analysis"
+      - name: supplier_region
+        description: "Supplier's region name - for regional analysis"
+
+      # Product attributes
+      - name: part_name
+        description: "Product name - for product reporting and analysis"
+      - name: manufacturer
+        description: "Product manufacturer - for manufacturer performance analysis"
+      - name: brand
+        description: "Product brand - for brand performance analysis"
+      - name: part_type
+        description: "Product type/category - for product category analysis"
+      - name: part_size
+        description: "Product size - for size-based analysis"
+      - name: container
+        description: "Product container type - for packaging analysis"
+      - name: list_price
+        description: "List price of the product - for pricing analysis"
+
+      # Order attributes
+      - name: order_status
+        description: "Order status code (O,F,P) - for order status analysis"
+      - name: order_priority
+        description: "Order priority code - for priority analysis"
+      - name: clerk
+        description: "Clerk ID who handled the order - for employee performance analysis"
+      - name: ship_priority
+        description: "Shipping priority - for shipping analysis"
+      - name: ship_instruct
+        description: "Shipping instructions - for shipping analysis"
+      - name: ship_mode
+        description: "Shipping mode (AIR, TRUCK, MAIL, SHIP) - for shipping analysis"
+
+      # Time attributes
+      - name: order_year
+        description: "Year when the order was placed - for time-based analysis"
+      - name: order_quarter
+        description: "Quarter when the order was placed - for quarterly analysis"
+      - name: order_month
+        description: "Month when the order was placed - for monthly analysis"
+      - name: order_month_name
+        description: "Month name when order was placed - for human-readable reporting"
+      - name: order_quarter_name
+        description: "Quarter name when order was placed - for human-readable reporting"
+      - name: order_day_type
+        description: "Order day type (Weekday/Weekend) - for timing patterns"
+      - name: order_season
+        description: "Order season (Winter/Spring/Summer/Fall) - for seasonal patterns"
+      - name: ship_year
+        description: "Year when the order was shipped - for shipping timing analysis"
+      - name: ship_quarter
+        description: "Quarter when the order was shipped - for shipping quarterly analysis"
+      - name: ship_month
+        description: "Month when the order was shipped - for shipping monthly analysis"
+      - name: ship_month_name
+        description: "Month name when order was shipped - for human-readable reporting"
+      - name: ship_quarter_name
+        description: "Quarter name when order was shipped - for human-readable reporting"
+      - name: ship_day_type
+        description: "Ship day type (Weekday/Weekend) - for shipping timing patterns"
+      - name: ship_season
+        description: "Ship season (Winter/Spring/Summer/Fall) - for seasonal shipping patterns"
+      - name: commit_year
+        description: "Year when the order was committed - for commitment timing analysis"
+      - name: commit_quarter
+        description: "Quarter when the order was committed - for commitment quarterly analysis"
+      - name: commit_month
+        description: "Month when the order was committed - for commitment monthly analysis"
+      - name: commit_month_name
+        description: "Month name when order was committed - for human-readable reporting"
+      - name: commit_quarter_name
+        description: "Quarter name when order was committed - for human-readable reporting"
+      - name: commit_day_type
+        description: "Commit day type (Weekday/Weekend) - for commitment timing patterns"
+      - name: commit_season
+        description: "Commit season (Winter/Spring/Summer/Fall) - for seasonal commitment patterns"
+      - name: receipt_year
+        description: "Year when the order was received - for receipt timing analysis"
+      - name: receipt_quarter
+        description: "Quarter when the order was received - for receipt quarterly analysis"
+      - name: receipt_month
+        description: "Month when the order was received - for receipt monthly analysis"
+      - name: receipt_month_name
+        description: "Month name when order was received - for human-readable reporting"
+      - name: receipt_quarter_name
+        description: "Quarter name when order was received - for human-readable reporting"
+      - name: receipt_day_type
+        description: "Receipt day type (Weekday/Weekend) - for receipt timing patterns"
+      - name: receipt_season
+        description: "Receipt season (Winter/Spring/Summer/Fall) - for seasonal receipt patterns"
+
+      # Core metrics
+      - name: quantity
+        description: "Quantity of units ordered - primary volume measure"
+      - name: gross_revenue
+        description: "Gross revenue before discounts - list price * quantity"
+      - name: discount_amount
+        description: "Discount amount applied to the line item"
+      - name: net_revenue
+        description: "Net revenue after discounts - gross revenue - discount amount"
+      - name: tax_amount
+        description: "Tax amount for the line item"
+
+      # Time-based metrics
+      - name: order_to_ship_days
+        description: "Days from order date to ship date - fulfillment speed measure"
+      - name: order_to_commit_days
+        description: "Days from order date to commit date - commitment speed measure"
+      - name: order_to_receipt_days
+        description: "Days from order date to receipt date - total delivery time"
+      - name: commit_to_ship_days
+        description: "Days from commit date to ship date - commitment accuracy measure"
+      - name: ship_to_receipt_days
+        description: "Days from ship date to receipt date - delivery speed measure"
+
+      # Calculated efficiency metrics
+      - name: fulfillment_speed_category
+        description: "Fulfillment speed classification - Fast (≤7 days), Standard (8-14 days), Slow (15-30 days), Delayed (>30 days)"
+      - name: commitment_accuracy_category
+        description: "Commitment accuracy classification - On Time (≤3 days), Slightly Delayed (4-7 days), Delayed (8-14 days), Significantly Delayed (>14 days)"
+      - name: delivery_speed_category
+        description: "Delivery speed classification - Fast (≤3 days), Standard (4-7 days), Slow (8-14 days), Very Slow (>14 days)"
+
+      # Performance flags
+      - name: is_returned
+        description: "Flag indicating if the line item was returned"
+      - name: is_filled
+        description: "Flag indicating if the line item was filled"
+      - name: is_fast_fulfillment
+        description: "Flag for fast fulfillment (≤7 days from order to ship)"
+      - name: is_on_time_commitment
+        description: "Flag for on-time commitment (≤3 days from commit to ship)"
+      - name: is_fast_delivery
+        description: "Flag for fast delivery (≤3 days from ship to receipt)"
+      - name: is_delayed_fulfillment
+        description: "Flag for delayed fulfillment (>30 days from order to ship)"
+      - name: is_late_commitment
+        description: "Flag for late commitment (>14 days from commit to ship)"
+      - name: is_slow_delivery
+        description: "Flag for slow delivery (>14 days from ship to receipt)"
+
+      # Geographic analysis
+      - name: is_international_order
+        description: "Flag for international orders (customer and supplier in different nations)"
+      - name: is_interregional_order
+        description: "Flag for interregional orders (customer and supplier in different regions)"
+      - name: order_geography_type
+        description: "Order geography classification - Domestic (same nation), Intra-Regional (same region), Inter-Regional (different regions)"
+
+      # Order complexity
+      - name: order_size_category
+        description: "Order size classification - Large (>100), Medium (51-100), Small (≤50)"
+      - name: priority_category
+        description: "Priority classification - High Priority (1-URGENT, 2-HIGH), Medium Priority (3-MEDIUM), Low Priority (others)"
+      - name: shipping_method_category
+        description: "Shipping method classification - Air Freight (AIR), Ground Transport (TRUCK), Mail Service (MAIL), Sea Freight (SHIP), Other"
+
+  - name: fact_order_summary
+    description: |
+      Order-level summary fact table for order performance and operational efficiency analysis.
+
+      This table provides order-level aggregations and performance metrics for order
+      management, fulfillment analysis, and operational efficiency evaluation. It's
+      designed for operations managers, fulfillment teams, and business intelligence
+      teams who need to understand order performance at an aggregate level.
+
+      **Grain:** One row per order (order_key)
+      **Use Cases:** Order management, fulfillment analysis, operational efficiency evaluation
+      **Key Dimensions:** Customer, Date, Geography, Performance Metrics
+    tests:
+      - unique:
+          column_name: order_key
+          config:
+            alias: unique_order_summary_order_key
+    columns:
+      - name: order_summary_fact_key
+        description: "Surrogate key for the order summary fact table - unique identifier for each order"
+        tests:
+          - unique
+          - not_null
+      - name: order_key
+        description: "Primary key for the order - links to order dimension"
+        tests:
+          - not_null
+      - name: customer_key
+        description: "Foreign key to customer dimension - identifies the customer"
+        tests:
+          - not_null
+      - name: order_date_key
+        description: "Foreign key to date dimension for order date - when the order was placed"
+      - name: nation_key
+        description: "Foreign key to geographic dimension - customer's nation identifier"
+      - name: region_key
+        description: "Foreign key to geographic dimension - customer's region identifier"
+
+      # Customer attributes
+      - name: customer_name
+        description: "Customer name - for customer identification and reporting"
+      - name: customer_address
+        description: "Customer address - for geographic analysis"
+      - name: customer_phone
+        description: "Customer phone number - for customer contact information"
+      - name: account_balance
+        description: "Customer account balance - for financial analysis"
+      - name: customer_segment
+        description: "Customer market segment (e.g., automobile, building) - for segment analysis"
+      - name: customer_nation
+        description: "Customer's nation name - for geographic analysis"
+      - name: customer_region
+        description: "Customer's region name - for regional analysis"
+
+      # Order attributes
+      - name: order_status
+        description: "Order status code (O,F,P) - for order status analysis"
+      - name: order_priority
+        description: "Order priority code - for priority analysis"
+      - name: clerk
+        description: "Clerk ID who handled the order - for employee performance analysis"
+      - name: ship_priority
+        description: "Shipping priority - for shipping analysis"
+
+      # Time attributes
+      - name: order_year
+        description: "Year when the order was placed - for time-based analysis"
+      - name: order_quarter
+        description: "Quarter when the order was placed - for quarterly analysis"
+      - name: order_month
+        description: "Month when the order was placed - for monthly analysis"
+      - name: order_month_name
+        description: "Month name when order was placed - for human-readable reporting"
+      - name: order_quarter_name
+        description: "Quarter name when order was placed - for human-readable reporting"
+      - name: order_day_type
+        description: "Order day type (Weekday/Weekend) - for timing patterns"
+      - name: order_season
+        description: "Order season (Winter/Spring/Summer/Fall) - for seasonal patterns"
+
+      # Order metrics
+      - name: line_item_count
+        description: "Number of line items in the order - for order complexity analysis"
+      - name: total_quantity
+        description: "Total quantity ordered across all line items - primary volume measure"
+      - name: total_gross_revenue
+        description: "Total gross revenue for the order - before discounts"
+      - name: total_discount_amount
+        description: "Total discount amount applied to the order"
+      - name: total_net_revenue
+        description: "Total net revenue for the order - after discounts"
+      - name: total_tax_amount
+        description: "Total tax amount for the order"
+      - name: unique_products
+        description: "Number of unique products in the order - for product diversity analysis"
+      - name: unique_suppliers
+        description: "Number of unique suppliers for the order - for supplier diversity analysis"
+      - name: returned_lines
+        description: "Number of returned line items - for return analysis"
+      - name: filled_lines
+        description: "Number of filled line items - for fulfillment analysis"
+      - name: avg_line_quantity
+        description: "Average quantity per line item - for line item analysis"
+      - name: avg_line_revenue
+        description: "Average revenue per line item - for line item analysis"
+      - name: shipping_methods_used
+        description: "Number of different shipping methods used - for shipping complexity analysis"
+      - name: shipping_instructions_used
+        description: "Number of different shipping instructions used - for shipping complexity analysis"
+
+      # Time-based metrics
+      - name: order_to_first_ship_days
+        description: "Days from order date to first ship date - initial fulfillment speed"
+      - name: order_to_last_ship_days
+        description: "Days from order date to last ship date - complete fulfillment time"
+      - name: order_to_first_commit_days
+        description: "Days from order date to first commit date - initial commitment speed"
+      - name: order_to_last_commit_days
+        description: "Days from order date to last commit date - complete commitment time"
+      - name: order_to_first_receipt_days
+        description: "Days from order date to first receipt date - initial delivery time"
+      - name: order_to_last_receipt_days
+        description: "Days from order date to last receipt date - complete delivery time"
+      - name: first_commit_to_ship_days
+        description: "Days from first commit date to first ship date - commitment accuracy"
+      - name: first_ship_to_receipt_days
+        description: "Days from first ship date to first receipt date - delivery speed"
+      - name: last_ship_to_receipt_days
+        description: "Days from last ship date to last receipt date - final delivery speed"
+
+      # Calculated efficiency metrics
+      - name: avg_quantity_per_line
+        description: "Average quantity per line item - total_quantity / line_item_count"
+      - name: avg_revenue_per_line
+        description: "Average revenue per line item - total_gross_revenue / line_item_count"
+      - name: order_discount_rate
+        description: "Discount rate for the order - total_discount_amount / total_gross_revenue"
+      - name: order_return_rate
+        description: "Return rate for the order - returned_lines / line_item_count"
+      - name: order_fill_rate
+        description: "Fill rate for the order - filled_lines / line_item_count"
+
+      # Order fulfillment categories
+      - name: fulfillment_speed_category
+        description: "Fulfillment speed classification - Fast (≤7 days), Standard (8-14 days), Slow (15-30 days), Delayed (>30 days)"
+      - name: commitment_accuracy_category
+        description: "Commitment accuracy classification - On Time (≤3 days), Slightly Delayed (4-7 days), Delayed (8-14 days), Significantly Delayed (>14 days)"
+      - name: delivery_speed_category
+        description: "Delivery speed classification - Fast (≤3 days), Standard (4-7 days), Slow (8-14 days), Very Slow (>14 days)"
+
+      # Order complexity categories
+      - name: volume_category
+        description: "Volume classification - Large Volume (>300), Medium Volume (101-300), Small Volume (≤100)"
+      - name: value_category
+        description: "Value classification - High Value (>100k), Medium Value (50k-100k), Low Value (<50k)"
+      - name: complexity_category
+        description: "Complexity classification - Complex (>10 lines), Standard (6-10 lines), Simple (≤5 lines)"
+      - name: product_diversity_category
+        description: "Product diversity classification - Multi-Product (>1 product), Single Product (1 product)"
+      - name: supplier_diversity_category
+        description: "Supplier diversity classification - Multi-Supplier (>1 supplier), Single Supplier (1 supplier)"
+      - name: priority_category
+        description: "Priority classification - High Priority (1-URGENT, 2-HIGH), Medium Priority (3-MEDIUM), Low Priority (others)"
+
+      # Performance flags
+      - name: is_fast_fulfillment
+        description: "Flag for fast fulfillment (≤7 days from order to first ship)"
+      - name: is_on_time_commitment
+        description: "Flag for on-time commitment (≤3 days from first commit to first ship)"
+      - name: is_fast_delivery
+        description: "Flag for fast delivery (≤3 days from first ship to first receipt)"
+      - name: is_delayed_fulfillment
+        description: "Flag for delayed fulfillment (>30 days from order to first ship)"
+      - name: is_late_commitment
+        description: "Flag for late commitment (>14 days from first commit to first ship)"
+      - name: is_slow_delivery
+        description: "Flag for slow delivery (>14 days from first ship to first receipt)"
+      - name: has_returns
+        description: "Flag for orders with returns"
+      - name: has_high_return_rate
+        description: "Flag for orders with high return rate (>10%)"
+      - name: has_low_fill_rate
+        description: "Flag for orders with low fill rate (<80%)"
+      - name: is_multi_supplier_order
+        description: "Flag for multi-supplier orders (>1 supplier)"
+      - name: is_multi_product_order
+        description: "Flag for multi-product orders (>1 product)" 
