@@ -1,0 +1,35 @@
+[2025-07-28T12:24:14.712+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dbt_pipeline.debug_password scheduled__2025-07-27T00:00:00+00:00 [queued]>
+[2025-07-28T12:24:14.716+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dbt_pipeline.debug_password scheduled__2025-07-27T00:00:00+00:00 [queued]>
+[2025-07-28T12:24:14.716+0000] {taskinstance.py:2170} INFO - Starting attempt 2 of 3
+[2025-07-28T12:24:14.720+0000] {taskinstance.py:2191} INFO - Executing <Task(BashOperator): debug_password> on 2025-07-27 00:00:00+00:00
+[2025-07-28T12:24:14.722+0000] {standard_task_runner.py:60} INFO - Started process 170 to run task
+[2025-07-28T12:24:14.724+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'dbt_pipeline', 'debug_password', 'scheduled__2025-07-27T00:00:00+00:00', '--job-id', '16', '--raw', '--subdir', 'DAGS_FOLDER/dbt_pipeline.py', '--cfg-path', '/tmp/tmp29mictpr']
+[2025-07-28T12:24:14.725+0000] {standard_task_runner.py:88} INFO - Job 16: Subtask debug_password
+[2025-07-28T12:24:14.732+0000] {warnings.py:109} WARNING - /home/***/.local/lib/python3.8/site-packages/***/settings.py:194: DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+  SQL_ALCHEMY_CONN = conf.get("database", "SQL_ALCHEMY_CONN")
+
+[2025-07-28T12:24:14.750+0000] {task_command.py:423} INFO - Running <TaskInstance: dbt_pipeline.debug_password scheduled__2025-07-27T00:00:00+00:00 [running]> on host 689b5ea420e2
+[2025-07-28T12:24:14.778+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='gotphoto' AIRFLOW_CTX_DAG_ID='dbt_pipeline' AIRFLOW_CTX_TASK_ID='debug_password' AIRFLOW_CTX_EXECUTION_DATE='2025-07-27T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-07-27T00:00:00+00:00'
+[2025-07-28T12:24:14.779+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-07-28T12:24:14.779+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'echo "SNOWFLAKE_PASSWORD: $SNOWFLAKE_PASSWORD" && echo "=== Profiles file content ===" && cat /opt/***/dbt_project/profiles/profiles.yml']
+[2025-07-28T12:24:14.787+0000] {subprocess.py:86} INFO - Output:
+[2025-07-28T12:24:14.788+0000] {subprocess.py:93} INFO - SNOWFLAKE_PASSWORD: Gotphoto123
+[2025-07-28T12:24:14.788+0000] {subprocess.py:93} INFO - === Profiles file content ===
+[2025-07-28T12:24:14.789+0000] {subprocess.py:93} INFO - gotphoto_dbt_project:
+[2025-07-28T12:24:14.789+0000] {subprocess.py:93} INFO -   target: dev
+[2025-07-28T12:24:14.789+0000] {subprocess.py:93} INFO -   outputs:
+[2025-07-28T12:24:14.789+0000] {subprocess.py:93} INFO -     dev:
+[2025-07-28T12:24:14.789+0000] {subprocess.py:93} INFO -       type: snowflake
+[2025-07-28T12:24:14.789+0000] {subprocess.py:93} INFO -       account: "ANBZLMX-TB05856"
+[2025-07-28T12:24:14.790+0000] {subprocess.py:93} INFO -       user: "gotphoto_etl_user"
+[2025-07-28T12:24:14.790+0000] {subprocess.py:93} INFO -       password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+[2025-07-28T12:24:14.790+0000] {subprocess.py:93} INFO -       role: "gotphoto_etl_role"
+[2025-07-28T12:24:14.790+0000] {subprocess.py:93} INFO -       warehouse: "GOTPHOTO_WH"
+[2025-07-28T12:24:14.790+0000] {subprocess.py:93} INFO -       database: "GOTPHOTO_ANALYTICS_DB"
+[2025-07-28T12:24:14.790+0000] {subprocess.py:93} INFO -       schema: "STAGING"
+[2025-07-28T12:24:14.790+0000] {subprocess.py:93} INFO -       threads: 1
+[2025-07-28T12:24:14.790+0000] {subprocess.py:93} INFO -       client_session_keep_alive: true
+[2025-07-28T12:24:14.790+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2025-07-28T12:24:14.801+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=dbt_pipeline, task_id=debug_password, execution_date=20250727T000000, start_date=20250728T122414, end_date=20250728T122414
+[2025-07-28T12:24:14.828+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-07-28T12:24:14.841+0000] {taskinstance.py:3280} INFO - 1 downstream tasks scheduled from follow-on schedule check

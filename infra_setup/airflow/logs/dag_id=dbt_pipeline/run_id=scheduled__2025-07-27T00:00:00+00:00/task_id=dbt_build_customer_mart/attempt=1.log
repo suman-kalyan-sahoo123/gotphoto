@@ -1,0 +1,59 @@
+[2025-07-28T12:40:31.471+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dbt_pipeline.dbt_build_customer_mart scheduled__2025-07-27T00:00:00+00:00 [queued]>
+[2025-07-28T12:40:31.476+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dbt_pipeline.dbt_build_customer_mart scheduled__2025-07-27T00:00:00+00:00 [queued]>
+[2025-07-28T12:40:31.478+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 2
+[2025-07-28T12:40:31.486+0000] {taskinstance.py:2191} INFO - Executing <Task(BashOperator): dbt_build_customer_mart> on 2025-07-27 00:00:00+00:00
+[2025-07-28T12:40:31.488+0000] {standard_task_runner.py:60} INFO - Started process 431 to run task
+[2025-07-28T12:40:31.490+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'dbt_pipeline', 'dbt_build_customer_mart', 'scheduled__2025-07-27T00:00:00+00:00', '--job-id', '34', '--raw', '--subdir', 'DAGS_FOLDER/dbt_pipeline.py', '--cfg-path', '/tmp/tmpn46af5oc']
+[2025-07-28T12:40:31.492+0000] {standard_task_runner.py:88} INFO - Job 34: Subtask dbt_build_customer_mart
+[2025-07-28T12:40:31.500+0000] {warnings.py:109} WARNING - /home/***/.local/lib/python3.8/site-packages/***/settings.py:194: DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+  SQL_ALCHEMY_CONN = conf.get("database", "SQL_ALCHEMY_CONN")
+
+[2025-07-28T12:40:31.527+0000] {task_command.py:423} INFO - Running <TaskInstance: dbt_pipeline.dbt_build_customer_mart scheduled__2025-07-27T00:00:00+00:00 [running]> on host 26b399183f28
+[2025-07-28T12:40:31.558+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='gotphoto' AIRFLOW_CTX_DAG_ID='dbt_pipeline' AIRFLOW_CTX_TASK_ID='dbt_build_customer_mart' AIRFLOW_CTX_EXECUTION_DATE='2025-07-27T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-07-27T00:00:00+00:00'
+[2025-07-28T12:40:31.562+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-07-28T12:40:31.563+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'cd /opt/***/dbt_project && dbt build --select marts.customer_analytics --project-dir . --profiles-dir profiles']
+[2025-07-28T12:40:31.568+0000] {subprocess.py:86} INFO - Output:
+[2025-07-28T12:41:18.593+0000] {subprocess.py:93} INFO - [0m12:41:18  Running with dbt=1.8.7
+[2025-07-28T12:41:19.458+0000] {subprocess.py:93} INFO - [0m12:41:19  Registered adapter: snowflake=1.8.4
+[2025-07-28T12:41:19.982+0000] {subprocess.py:93} INFO - [0m12:41:19  Found 27 models, 124 data tests, 8 sources, 569 macros
+[2025-07-28T12:41:19.985+0000] {subprocess.py:93} INFO - [0m12:41:19
+[2025-07-28T12:41:24.254+0000] {subprocess.py:93} INFO - [0m12:41:24  Concurrency: 1 threads (target='dev')
+[2025-07-28T12:41:24.255+0000] {subprocess.py:93} INFO - [0m12:41:24
+[2025-07-28T12:41:24.257+0000] {subprocess.py:93} INFO - [0m12:41:24  1 of 14 START sql table model CUSTOMER_ANALYTICS_MART.fact_customer_orders ..... [RUN]
+[2025-07-28T12:41:55.491+0000] {subprocess.py:93} INFO - [0m12:41:55  1 of 14 OK created sql table model CUSTOMER_ANALYTICS_MART.fact_customer_orders  [[32mSUCCESS 1[0m in 31.18s]
+[2025-07-28T12:41:55.506+0000] {subprocess.py:93} INFO - [0m12:41:55  2 of 14 START sql table model CUSTOMER_ANALYTICS_MART.fact_customer_summary .... [RUN]
+[2025-07-28T12:42:06.099+0000] {subprocess.py:93} INFO - [0m12:42:06  2 of 14 OK created sql table model CUSTOMER_ANALYTICS_MART.fact_customer_summary  [[32mSUCCESS 1[0m in 10.59s]
+[2025-07-28T12:42:06.100+0000] {subprocess.py:93} INFO - [0m12:42:06  3 of 14 START test not_null_fact_customer_orders_customer_key .................. [RUN]
+[2025-07-28T12:42:06.777+0000] {subprocess.py:93} INFO - [0m12:42:06  3 of 14 PASS not_null_fact_customer_orders_customer_key ........................ [[32mPASS[0m in 0.68s]
+[2025-07-28T12:42:06.778+0000] {subprocess.py:93} INFO - [0m12:42:06  4 of 14 START test not_null_fact_customer_orders_customer_order_fact_key ....... [RUN]
+[2025-07-28T12:42:07.537+0000] {subprocess.py:93} INFO - [0m12:42:07  4 of 14 PASS not_null_fact_customer_orders_customer_order_fact_key ............. [[32mPASS[0m in 0.76s]
+[2025-07-28T12:42:07.538+0000] {subprocess.py:93} INFO - [0m12:42:07  5 of 14 START test not_null_fact_customer_orders_order_key ..................... [RUN]
+[2025-07-28T12:42:08.069+0000] {subprocess.py:93} INFO - [0m12:42:08  5 of 14 PASS not_null_fact_customer_orders_order_key ........................... [[32mPASS[0m in 0.53s]
+[2025-07-28T12:42:08.071+0000] {subprocess.py:93} INFO - [0m12:42:08  6 of 14 START test unique_fact_customer_orders_customer_order_fact_key ......... [RUN]
+[2025-07-28T12:42:09.102+0000] {subprocess.py:93} INFO - [0m12:42:09  6 of 14 PASS unique_fact_customer_orders_customer_order_fact_key ............... [[32mPASS[0m in 1.03s]
+[2025-07-28T12:42:09.104+0000] {subprocess.py:93} INFO - [0m12:42:09  7 of 14 START test unique_fact_customer_orders_order_key ....................... [RUN]
+[2025-07-28T12:42:11.639+0000] {subprocess.py:93} INFO - [0m12:42:11  7 of 14 PASS unique_fact_customer_orders_order_key ............................. [[32mPASS[0m in 2.53s]
+[2025-07-28T12:42:11.640+0000] {subprocess.py:93} INFO - [0m12:42:11  8 of 14 START test not_null_fact_customer_summary_customer_key ................. [RUN]
+[2025-07-28T12:42:12.472+0000] {subprocess.py:93} INFO - [0m12:42:12  8 of 14 PASS not_null_fact_customer_summary_customer_key ....................... [[32mPASS[0m in 0.83s]
+[2025-07-28T12:42:12.474+0000] {subprocess.py:93} INFO - [0m12:42:12  9 of 14 START test not_null_fact_customer_summary_customer_summary_fact_key .... [RUN]
+[2025-07-28T12:42:13.396+0000] {subprocess.py:93} INFO - [0m12:42:13  9 of 14 PASS not_null_fact_customer_summary_customer_summary_fact_key .......... [[32mPASS[0m in 0.90s]
+[2025-07-28T12:42:13.449+0000] {subprocess.py:93} INFO - [0m12:42:13  10 of 14 START test unique_fact_customer_summary_customer_key .................. [RUN]
+[2025-07-28T12:42:16.657+0000] {subprocess.py:93} INFO - [0m12:42:16  10 of 14 PASS unique_fact_customer_summary_customer_key ........................ [[32mPASS[0m in 3.17s]
+[2025-07-28T12:42:16.722+0000] {subprocess.py:93} INFO - [0m12:42:16  11 of 14 START test unique_fact_customer_summary_customer_summary_fact_key ..... [RUN]
+[2025-07-28T12:42:17.538+0000] {subprocess.py:93} INFO - [0m12:42:17  11 of 14 PASS unique_fact_customer_summary_customer_summary_fact_key ........... [[32mPASS[0m in 0.81s]
+[2025-07-28T12:42:17.540+0000] {subprocess.py:93} INFO - [0m12:42:17  12 of 14 START python table model CUSTOMER_ANALYTICS_MART.customer_lifetime_value  [RUN]
+[2025-07-28T12:42:28.347+0000] {subprocess.py:93} INFO - [0m12:42:28  12 of 14 OK created python table model CUSTOMER_ANALYTICS_MART.customer_lifetime_value  [[32mSUCCESS 1[0m in 10.81s]
+[2025-07-28T12:42:28.349+0000] {subprocess.py:93} INFO - [0m12:42:28  13 of 14 START test not_null_customer_lifetime_value_customer_key .............. [RUN]
+[2025-07-28T12:42:28.943+0000] {subprocess.py:93} INFO - [0m12:42:28  13 of 14 PASS not_null_customer_lifetime_value_customer_key .................... [[32mPASS[0m in 0.59s]
+[2025-07-28T12:42:28.944+0000] {subprocess.py:93} INFO - [0m12:42:28  14 of 14 START test unique_customer_lifetime_value_customer_key ................ [RUN]
+[2025-07-28T12:42:29.568+0000] {subprocess.py:93} INFO - [0m12:42:29  14 of 14 PASS unique_customer_lifetime_value_customer_key ...................... [[32mPASS[0m in 0.62s]
+[2025-07-28T12:42:29.571+0000] {subprocess.py:93} INFO - [0m12:42:29
+[2025-07-28T12:42:29.571+0000] {subprocess.py:93} INFO - [0m12:42:29  Finished running 3 table models, 11 data tests in 0 hours 1 minutes and 9.59 seconds (69.59s).
+[2025-07-28T12:42:29.625+0000] {subprocess.py:93} INFO - [0m12:42:29
+[2025-07-28T12:42:29.625+0000] {subprocess.py:93} INFO - [0m12:42:29  [32mCompleted successfully[0m
+[2025-07-28T12:42:29.625+0000] {subprocess.py:93} INFO - [0m12:42:29
+[2025-07-28T12:42:29.626+0000] {subprocess.py:93} INFO - [0m12:42:29  Done. PASS=14 WARN=0 ERROR=0 SKIP=0 TOTAL=14
+[2025-07-28T12:42:30.293+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2025-07-28T12:42:30.306+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=dbt_pipeline, task_id=dbt_build_customer_mart, execution_date=20250727T000000, start_date=20250728T124031, end_date=20250728T124230
+[2025-07-28T12:42:30.325+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-07-28T12:42:30.334+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check
