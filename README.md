@@ -599,6 +599,54 @@ docker exec dbt-cli ps aux | grep dbt
 
 ---
 
+## 🚀 CI/CD Pipeline
+
+### **How It Works**
+
+![CI/CD Pipeline Flow](infra_setup/images_for_readme/cicd.png)
+
+**What happens:**
+1. **Checkout Code**: Gets latest code from PR branch
+2. **Setup Python & dbt**: Installs dbt and dependencies
+3. **Create dbt Profiles**: Generates profiles.yml with PR-specific config
+4. **Verify Source Database**: Checks if source database exists
+5. **Clone Snowflake Database**: Creates `GOTPHOTO_ANALYTICS_DB_PR_<PR_NUMBER>`
+6. **dbt Debug**: Validates connection and configuration
+7. **dbt Deps**: Installs dbt packages
+8. **dbt Compile**: Compiles all models to check syntax
+9. **Detect Changed Models**: Uses `git diff` to find changed `.sql` files
+10. **Run Changed Models Only**: Executes only modified models
+11. **Cleanup PR Database**: Deletes PR database after validation
+
+**Production Deployment:**
+1. **Checkout Code**: Gets latest code from main branch
+2. **Setup Python & dbt**: Installs dbt and dependencies
+3. **Create dbt Profiles**: Generates profiles.yml with production config
+4. **dbt Debug**: Validates connection and configuration
+5. **dbt Deps**: Installs dbt packages
+6. **dbt Compile**: Compiles all models to check syntax
+7. **Full-Refresh All Models**: Runs all models with `--full-refresh`
+8. **Deploy to Production Schema**: Updates models in production schema
+9. **Run All Tests**: Executes all dbt tests
+
+### **Key Features**
+- ✅ **Database Cloning**: Each PR gets isolated environment
+- ✅ **Smart Detection**: Only runs changed models (PR) vs all models (merge)
+- ✅ **Automatic Cleanup**: PR databases deleted after validation
+- ✅ **Fast Execution**: 2-5 min for PR validation
+
+### **Troubleshooting**
+
+| Issue | Solution |
+|-------|----------|
+| Workflow not triggering | Check changes are in `gotphoto_dbt_project/**` |
+| Database clone fails | Grant `CREATE DATABASE ON ACCOUNT` permission |
+| Permission denied on tables | Grant `CREATE TABLE ON SCHEMA` permission |
+| Profiles not found | Use `--profiles-dir profiles` flag |
+| SQL syntax errors | Remove Git merge conflict markers |
+
+---
+
 ## 📈 Usage Examples
 
 ### 💡 Business Intelligence Queries
