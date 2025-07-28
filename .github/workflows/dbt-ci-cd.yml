@@ -114,6 +114,17 @@ jobs:
               exit(1)
           "
           
+      - name: Debug directory structure
+        run: |
+          echo "=== Current Directory ==="
+          pwd
+          echo "=== Directory Contents ==="
+          ls -la
+          echo "=== Looking for dbt project ==="
+          find . -name "dbt_project.yml" -type f 2>/dev/null || echo "No dbt_project.yml found"
+          echo "=== Checking gotphoto_dbt_project ==="
+          ls -la gotphoto_dbt_project/ 2>/dev/null || echo "gotphoto_dbt_project not found"
+          
       - name: dbt debug
         run: |
           cd gotphoto_dbt_project

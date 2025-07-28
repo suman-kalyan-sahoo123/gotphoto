@@ -1,0 +1,25 @@
+name: Test Paths
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Debug Paths
+        run: |
+          echo "=== Current Directory ==="
+          pwd
+          echo "=== Directory Contents ==="
+          ls -la
+          echo "=== Parent Directory ==="
+          ls -la ../
+          echo "=== Looking for dbt_project.yml ==="
+          find . -name "dbt_project.yml" -type f
+          echo "=== Looking for .github directory ==="
+          find . -name ".github" -type d 
