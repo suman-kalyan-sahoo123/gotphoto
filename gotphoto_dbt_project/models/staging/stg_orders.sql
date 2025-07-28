@@ -1,3 +1,4 @@
+-- Trigger PR validation - testing CI/CD pipeline
 
 with source as (
     select 
