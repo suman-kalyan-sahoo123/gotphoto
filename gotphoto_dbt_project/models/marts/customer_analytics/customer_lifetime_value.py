@@ -1,5 +1,7 @@
 from snowflake.snowpark.functions import sum, count, when, col, lit
 
+
+
 def model(dbt, session):
     """
     Customer Lifetime Value (CLV) calculation model.
