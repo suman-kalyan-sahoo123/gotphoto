@@ -55,16 +55,6 @@ jobs:
                 threads: 2
           EOF
           
-      - name: Debug profiles creation
-        run: |
-          cd gotphoto_dbt_project
-          echo "=== Current directory ==="
-          pwd
-          echo "=== Profiles directory contents ==="
-          ls -la profiles/ 2>/dev/null || echo "profiles directory not found"
-          echo "=== Profiles.yml content ==="
-          cat profiles/profiles.yml 2>/dev/null || echo "profiles.yml not found"
-          
       - name: Verify source database exists
         run: |
           python -c "
@@ -124,22 +114,9 @@ jobs:
               exit(1)
           "
           
-      - name: Debug directory structure
-        run: |
-          echo "=== Current Directory ==="
-          pwd
-          echo "=== Directory Contents ==="
-          ls -la
-          echo "=== Looking for dbt project ==="
-          find . -name "dbt_project.yml" -type f 2>/dev/null || echo "No dbt_project.yml found"
-          echo "=== Checking gotphoto_dbt_project ==="
-          ls -la gotphoto_dbt_project/ 2>/dev/null || echo "gotphoto_dbt_project not found"
-          
       - name: dbt debug
         run: |
           cd gotphoto_dbt_project
-          pwd
-          ls -la
           dbt debug --project-dir . --profiles-dir profiles
           
       - name: dbt deps
@@ -155,7 +132,7 @@ jobs:
       - name: dbt run (changed models only)
         run: |
           cd gotphoto_dbt_project
-          dbt run --select state:modified+ --state-refs main --project-dir . --profiles-dir profiles
+          dbt run --select state:modified+ --project-dir . --profiles-dir profiles
           
       - name: Cleanup cloned database
         if: always()
@@ -243,4 +220,4 @@ jobs:
       - name: dbt run (changed models with full-refresh)
         run: |
           cd gotphoto_dbt_project
-          dbt run --select state:modified+ --state-refs main --full-refresh --project-dir . --profiles-dir profiles 
+          dbt run --select state:modified+ --full-refresh --project-dir . --profiles-dir profiles 
