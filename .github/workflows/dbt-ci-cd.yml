@@ -38,9 +38,8 @@ jobs:
           
       - name: Create dbt profiles
         run: |
-          cd gotphoto_dbt_project
-          mkdir -p profiles
-          cat > profiles/profiles.yml << EOF
+          mkdir -p gotphoto_dbt_project/profiles
+          cat > gotphoto_dbt_project/profiles/profiles.yml << EOF
           gotphoto_dbt_project:
             target: pr_${{ github.event.number }}
             outputs:
@@ -209,9 +208,8 @@ jobs:
           
       - name: Create dbt profiles
         run: |
-          cd gotphoto_dbt_project
-          mkdir -p profiles
-          cat > profiles/profiles.yml << EOF
+          mkdir -p gotphoto_dbt_project/profiles
+          cat > gotphoto_dbt_project/profiles/profiles.yml << EOF
           gotphoto_dbt_project:
             target: prod
             outputs:
