@@ -13,7 +13,7 @@ models:
         description: "Customer name"
         tests:
           - not_null
-      - name: customer_address
+      - name: customer_address for 
         description: "Customer address"
       - name: nation_key
         description: "Foreign key to nation"
