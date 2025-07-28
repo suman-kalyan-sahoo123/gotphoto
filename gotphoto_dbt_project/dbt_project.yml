@@ -68,3 +68,5 @@ models:
         +persist_docs:
           relation: true
           columns: true
+
+# Trigger PR validation - testing CI/CD pipeline

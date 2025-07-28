@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 
+=======
+-- FORCE TRIGGER: Testing GitHub Actions workflow
+>>>>>>> e26799d (testing cicd)
 -- Trigger PR validation - testing CI/CD pipeline
 -- Test comment to trigger GitHub Actions
 

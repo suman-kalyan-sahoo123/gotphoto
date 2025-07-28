@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'gotphoto/gotphoto_dbt_project/**'
+      - 'gotphoto_dbt_project/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'gotphoto/gotphoto_dbt_project/**'
+      - 'gotphoto_dbt_project/**'
 
 env:
   DBT_PROFILES_DIR: ./gotphoto/gotphoto_dbt_project/profiles
