@@ -47,7 +47,7 @@ We use a **single combined workflow**:
 ```
 1. PR Merged to Main → Validate Project → Full-Refresh Changed Models → Test
 2. Expected Time: 5-15 minutes
-3. Cost: ~$1.00-5.00 per deployment
+t
 ```
 
 ## 🧪 Testing the Setup
