@@ -1,4 +1,7 @@
+
 -- Trigger PR validation - testing CI/CD pipeline
+-- Test comment to trigger GitHub Actions
+
 
 with source as (
     select 
