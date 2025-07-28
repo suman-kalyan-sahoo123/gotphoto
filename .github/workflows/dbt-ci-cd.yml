@@ -132,7 +132,15 @@ jobs:
       - name: dbt run (changed models only)
         run: |
           cd gotphoto_dbt_project
-          dbt run --select state:modified+ --project-dir . --profiles-dir profiles
+          # Get changed files and run only those models
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep "models/" || echo "")
+          if [ -n "$CHANGED_FILES" ]; then
+            echo "Changed model files: $CHANGED_FILES"
+            dbt run --select $(echo $CHANGED_FILES | sed 's/models\///g' | sed 's/\.sql//g' | tr '\n' ' ') --project-dir . --profiles-dir profiles
+          else
+            echo "No model files changed, running all models"
+            dbt run --project-dir . --profiles-dir profiles
+          fi
           
       - name: Cleanup cloned database
         if: always()
@@ -217,7 +225,7 @@ jobs:
           cd gotphoto_dbt_project
           dbt compile --project-dir . --profiles-dir profiles
           
-      - name: dbt run (changed models with full-refresh)
+      - name: dbt run (all models with full-refresh)
         run: |
           cd gotphoto_dbt_project
-          dbt run --select state:modified+ --full-refresh --project-dir . --profiles-dir profiles 
+          dbt run --full-refresh --project-dir . --profiles-dir profiles 
