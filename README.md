@@ -1,8 +1,5 @@
 # 🏢 GotPhoto Home Assignment
 
-[![dbt](https://img.shields.io/badge/dbt-1.10.4-orange.svg)](https://www.getdbt.com/)
-[![Snowflake](https://img.shields.io/badge/Snowflake-Cloud-blue.svg)](https://www.snowflake.com/)
-[![Python](https://img.shields.io/badge/Python-3.9+-green.svg)](https://www.python.org/)
 
 A comprehensive data platform built with **dbt** (data build tool) that transforms TPC-H sample data from Snowflake into actionable business intelligence through multiple data marts focused on revenue analysis, customer analytics, supplier performance, and order fulfillment.
 
@@ -33,7 +30,7 @@ This platform delivers comprehensive analytics across key business domains:
 
 ### 📊 **High-Level Architecture Flow**
 
-![Architecture Flow](https://github.com/user-attachments/assets/your-image-id-here)
+![Architecture Flow](infra_setup/images_for_readme/full_lineage.png)
 
 *The diagram above shows the complete data flow from Snowflake TPC-H source data through our layered architecture to specialized data marts.*
 
