@@ -603,6 +603,8 @@ docker exec dbt-cli ps aux | grep dbt
 
 ### **How It Works**
 
+![PR Merge Process](infra_setup/images_for_readme/pr_image.png)
+
 ![CI/CD Pipeline Flow](infra_setup/images_for_readme/cicd.png)
 
 **What happens:**
@@ -646,6 +648,90 @@ docker exec dbt-cli ps aux | grep dbt
 | SQL syntax errors | Remove Git merge conflict markers |
 
 ---
+
+## 🚀 Apache Airflow Orchestration
+
+![Airflow Full Architecture](infra_setup/images_for_readme/airflow_full.png)
+
+![Airflow DAG Flow](infra_setup/images_for_readme/airflow_dag.png)
+
+### 🏗️ **DAG Structure**
+
+The `dbt_pipeline` DAG orchestrates the complete data transformation:
+
+| Task | Purpose | Dependencies |
+|------|---------|--------------|
+| `dbt_debug` | Validate connection & config | None |
+| `dbt_deps` | Install dbt packages | `dbt_debug` |
+| `dbt_build_staging` | Build staging models | `dbt_deps` |
+| `dbt_build_intermediate` | Build intermediate models | `dbt_build_staging` |
+| `dbt_build_dimensions` | Build dimension models | `dbt_build_intermediate` |
+| `dbt_build_marts` | Build all mart models in parallel | `dbt_build_dimensions` |
+
+### 🚀 **Getting Started with Airflow**
+
+#### **1. Navigate to Airflow Directory**
+```bash
+cd gotphoto/infra_setup/airflow
+```
+
+#### **2. Environment Setup**
+Create a `.env` file with your Snowflake credentials:
+```bash
+# Create environment file
+cp env.snowflake.example .env
+
+# Edit with your actual credentials
+SNOWFLAKE_PASSWORD=your_actual_password
+```
+
+#### **3. Start Airflow**
+```bash
+# Start all Airflow services
+make airflow-up
+```
+
+#### **4. Access Airflow UI**
+Open your browser and navigate to:
+```
+http://localhost:8081
+```
+**Credentials:** `airflow` / `airflow`
+
+#### **5. Monitor DAGs**
+```bash
+# List all available DAGs
+make list-dags
+```
+
+#### **6. Stop Airflow**
+```bash
+# Stop all Airflow services
+make airflow-down
+```
+
+### 🛠️ **Available Commands**
+
+| Command | Purpose | Usage |
+|---------|---------|-------|
+| `make airflow-up` | Start all Airflow services | `make airflow-up` |
+| `make airflow-down` | Stop all Airflow services | `make airflow-down` |
+| `make list-dags` | List available DAGs | `make list-dags` |
+
+### 🔧 **DAG Features**
+
+#### **🔄 Parallel Execution**
+- **Staging → Intermediate → Dimensions → Marts**: Sequential execution
+- **Mart Models**: Parallel execution for faster completion
+- **Resource Optimization**: Controlled concurrency limits
+
+
+
+
+
+```
+
+
 
 ## 📈 Usage Examples
 

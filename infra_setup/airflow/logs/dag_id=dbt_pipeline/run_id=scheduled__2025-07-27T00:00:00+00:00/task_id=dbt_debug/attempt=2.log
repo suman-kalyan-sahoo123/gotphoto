@@ -1,0 +1,81 @@
+[2025-07-28T12:05:20.379+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dbt_pipeline.dbt_debug scheduled__2025-07-27T00:00:00+00:00 [queued]>
+[2025-07-28T12:05:20.383+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dbt_pipeline.dbt_debug scheduled__2025-07-27T00:00:00+00:00 [queued]>
+[2025-07-28T12:05:20.383+0000] {taskinstance.py:2170} INFO - Starting attempt 2 of 3
+[2025-07-28T12:05:20.388+0000] {taskinstance.py:2191} INFO - Executing <Task(BashOperator): dbt_debug> on 2025-07-27 00:00:00+00:00
+[2025-07-28T12:05:20.392+0000] {standard_task_runner.py:60} INFO - Started process 121 to run task
+[2025-07-28T12:05:20.394+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'dbt_pipeline', 'dbt_debug', 'scheduled__2025-07-27T00:00:00+00:00', '--job-id', '5', '--raw', '--subdir', 'DAGS_FOLDER/dbt_pipeline.py', '--cfg-path', '/tmp/tmpqgnf17bc']
+[2025-07-28T12:05:20.394+0000] {standard_task_runner.py:88} INFO - Job 5: Subtask dbt_debug
+[2025-07-28T12:05:20.401+0000] {warnings.py:109} WARNING - /home/***/.local/lib/python3.8/site-packages/***/settings.py:194: DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+  SQL_ALCHEMY_CONN = conf.get("database", "SQL_ALCHEMY_CONN")
+
+[2025-07-28T12:05:20.425+0000] {task_command.py:423} INFO - Running <TaskInstance: dbt_pipeline.dbt_debug scheduled__2025-07-27T00:00:00+00:00 [running]> on host 0e273d2b8984
+[2025-07-28T12:05:20.454+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='gotphoto' AIRFLOW_CTX_DAG_ID='dbt_pipeline' AIRFLOW_CTX_TASK_ID='dbt_debug' AIRFLOW_CTX_EXECUTION_DATE='2025-07-27T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-07-27T00:00:00+00:00'
+[2025-07-28T12:05:20.459+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-07-28T12:05:20.459+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'cd /opt/***/dbt_project && dbt debug --project-dir . --profiles-dir profiles']
+[2025-07-28T12:05:20.465+0000] {subprocess.py:86} INFO - Output:
+[2025-07-28T12:05:21.504+0000] {subprocess.py:93} INFO - [0m12:05:21  Running with dbt=1.8.7
+[2025-07-28T12:05:21.512+0000] {subprocess.py:93} INFO - [0m12:05:21  dbt version: 1.8.7
+[2025-07-28T12:05:21.513+0000] {subprocess.py:93} INFO - [0m12:05:21  python version: 3.8.18
+[2025-07-28T12:05:21.513+0000] {subprocess.py:93} INFO - [0m12:05:21  python path: /usr/local/bin/python
+[2025-07-28T12:05:21.513+0000] {subprocess.py:93} INFO - [0m12:05:21  os info: Linux-6.12.5-linuxkit-aarch64-with-glibc2.34
+[2025-07-28T12:05:22.599+0000] {subprocess.py:93} INFO - [0m12:05:22  Using profiles dir at profiles
+[2025-07-28T12:05:22.599+0000] {subprocess.py:93} INFO - [0m12:05:22  Using profiles.yml file at profiles/profiles.yml
+[2025-07-28T12:05:22.600+0000] {subprocess.py:93} INFO - [0m12:05:22  Using dbt_project.yml file at ./dbt_project.yml
+[2025-07-28T12:05:22.600+0000] {subprocess.py:93} INFO - [0m12:05:22  adapter type: snowflake
+[2025-07-28T12:05:22.601+0000] {subprocess.py:93} INFO - [0m12:05:22  adapter version: 1.8.4
+[2025-07-28T12:05:22.646+0000] {subprocess.py:93} INFO - [0m12:05:22  Configuration:
+[2025-07-28T12:05:22.647+0000] {subprocess.py:93} INFO - [0m12:05:22    profiles.yml file [[32mOK found and valid[0m]
+[2025-07-28T12:05:22.647+0000] {subprocess.py:93} INFO - [0m12:05:22    dbt_project.yml file [[32mOK found and valid[0m]
+[2025-07-28T12:05:22.648+0000] {subprocess.py:93} INFO - [0m12:05:22  Required dependencies:
+[2025-07-28T12:05:22.656+0000] {subprocess.py:93} INFO - [0m12:05:22   - git [[31mERROR[0m]
+[2025-07-28T12:05:22.657+0000] {subprocess.py:93} INFO - 
+[2025-07-28T12:05:22.657+0000] {subprocess.py:93} INFO - [0m12:05:22  Connection:
+[2025-07-28T12:05:22.657+0000] {subprocess.py:93} INFO - [0m12:05:22    account: ANBZLMX-TB05856
+[2025-07-28T12:05:22.658+0000] {subprocess.py:93} INFO - [0m12:05:22    user: gotphoto_etl_user
+[2025-07-28T12:05:22.658+0000] {subprocess.py:93} INFO - [0m12:05:22    database: GOTPHOTO_ANALYTICS_DB
+[2025-07-28T12:05:22.658+0000] {subprocess.py:93} INFO - [0m12:05:22    warehouse: GOTPHOTO_WH
+[2025-07-28T12:05:22.658+0000] {subprocess.py:93} INFO - [0m12:05:22    role: gotphoto_etl_role
+[2025-07-28T12:05:22.659+0000] {subprocess.py:93} INFO - [0m12:05:22    schema: STAGING
+[2025-07-28T12:05:22.659+0000] {subprocess.py:93} INFO - [0m12:05:22    authenticator: None
+[2025-07-28T12:05:22.660+0000] {subprocess.py:93} INFO - [0m12:05:22    oauth_client_id: None
+[2025-07-28T12:05:22.660+0000] {subprocess.py:93} INFO - [0m12:05:22    query_tag: None
+[2025-07-28T12:05:22.661+0000] {subprocess.py:93} INFO - [0m12:05:22    client_session_keep_alive: True
+[2025-07-28T12:05:22.662+0000] {subprocess.py:93} INFO - [0m12:05:22    host: None
+[2025-07-28T12:05:22.662+0000] {subprocess.py:93} INFO - [0m12:05:22    port: None
+[2025-07-28T12:05:22.662+0000] {subprocess.py:93} INFO - [0m12:05:22    proxy_host: None
+[2025-07-28T12:05:22.663+0000] {subprocess.py:93} INFO - [0m12:05:22    proxy_port: None
+[2025-07-28T12:05:22.663+0000] {subprocess.py:93} INFO - [0m12:05:22    protocol: None
+[2025-07-28T12:05:22.663+0000] {subprocess.py:93} INFO - [0m12:05:22    connect_retries: 1
+[2025-07-28T12:05:22.663+0000] {subprocess.py:93} INFO - [0m12:05:22    connect_timeout: None
+[2025-07-28T12:05:22.664+0000] {subprocess.py:93} INFO - [0m12:05:22    retry_on_database_errors: False
+[2025-07-28T12:05:22.664+0000] {subprocess.py:93} INFO - [0m12:05:22    retry_all: False
+[2025-07-28T12:05:22.664+0000] {subprocess.py:93} INFO - [0m12:05:22    insecure_mode: False
+[2025-07-28T12:05:22.664+0000] {subprocess.py:93} INFO - [0m12:05:22    reuse_connections: None
+[2025-07-28T12:05:22.665+0000] {subprocess.py:93} INFO - [0m12:05:22  Registered adapter: snowflake=1.8.4
+[2025-07-28T12:05:23.674+0000] {subprocess.py:93} INFO - [0m12:05:23    Connection test: [[31mERROR[0m]
+[2025-07-28T12:05:23.675+0000] {subprocess.py:93} INFO - 
+[2025-07-28T12:05:23.675+0000] {subprocess.py:93} INFO - [0m12:05:23  [31m2 checks failed:[0m
+[2025-07-28T12:05:23.675+0000] {subprocess.py:93} INFO - [0m12:05:23  Error from git --help: User does not have permissions for this command: "git"
+[2025-07-28T12:05:23.675+0000] {subprocess.py:93} INFO - 
+[2025-07-28T12:05:23.676+0000] {subprocess.py:93} INFO - [0m12:05:23  dbt was unable to connect to the specified database.
+[2025-07-28T12:05:23.676+0000] {subprocess.py:93} INFO - The database returned the following error:
+[2025-07-28T12:05:23.676+0000] {subprocess.py:93} INFO - 
+[2025-07-28T12:05:23.676+0000] {subprocess.py:93} INFO -   >Database Error
+[2025-07-28T12:05:23.676+0000] {subprocess.py:93} INFO -   250001 (08001): Failed to connect to DB: ANBZLMX-TB05856.snowflakecomputing.com:443. Incorrect username or password was specified.
+[2025-07-28T12:05:23.676+0000] {subprocess.py:93} INFO - 
+[2025-07-28T12:05:23.676+0000] {subprocess.py:93} INFO - Check your database credentials and try again. For more information, visit:
+[2025-07-28T12:05:23.677+0000] {subprocess.py:93} INFO - https://docs.getdbt.com/docs/configure-your-profile
+[2025-07-28T12:05:23.677+0000] {subprocess.py:93} INFO - 
+[2025-07-28T12:05:23.677+0000] {subprocess.py:93} INFO - 
+[2025-07-28T12:05:24.448+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2025-07-28T12:05:24.454+0000] {taskinstance.py:2698} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 433, in _execute_task
+    result = execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/bash.py", line 212, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2025-07-28T12:05:24.456+0000] {taskinstance.py:1138} INFO - Marking task as UP_FOR_RETRY. dag_id=dbt_pipeline, task_id=dbt_debug, execution_date=20250727T000000, start_date=20250728T120520, end_date=20250728T120524
+[2025-07-28T12:05:24.464+0000] {standard_task_runner.py:107} ERROR - Failed to execute job 5 for task dbt_debug (Bash command failed. The command returned a non-zero exit code 1.; 121)
+[2025-07-28T12:05:24.492+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 1
+[2025-07-28T12:05:24.503+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check

@@ -1,0 +1,55 @@
+[2025-07-28T12:46:23.958+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dbt_pipeline.dbt_build_order_mart manual__2025-07-28T12:44:30.180992+00:00 [queued]>
+[2025-07-28T12:46:23.964+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dbt_pipeline.dbt_build_order_mart manual__2025-07-28T12:44:30.180992+00:00 [queued]>
+[2025-07-28T12:46:23.964+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 2
+[2025-07-28T12:46:23.970+0000] {taskinstance.py:2191} INFO - Executing <Task(BashOperator): dbt_build_order_mart> on 2025-07-28 12:44:30.180992+00:00
+[2025-07-28T12:46:23.973+0000] {standard_task_runner.py:60} INFO - Started process 401 to run task
+[2025-07-28T12:46:23.975+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'dbt_pipeline', 'dbt_build_order_mart', 'manual__2025-07-28T12:44:30.180992+00:00', '--job-id', '45', '--raw', '--subdir', 'DAGS_FOLDER/dbt_pipeline.py', '--cfg-path', '/tmp/tmpzyl60aor']
+[2025-07-28T12:46:23.976+0000] {standard_task_runner.py:88} INFO - Job 45: Subtask dbt_build_order_mart
+[2025-07-28T12:46:23.982+0000] {warnings.py:109} WARNING - /home/***/.local/lib/python3.8/site-packages/***/settings.py:194: DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+  SQL_ALCHEMY_CONN = conf.get("database", "SQL_ALCHEMY_CONN")
+
+[2025-07-28T12:46:24.003+0000] {task_command.py:423} INFO - Running <TaskInstance: dbt_pipeline.dbt_build_order_mart manual__2025-07-28T12:44:30.180992+00:00 [running]> on host 6ed405011aee
+[2025-07-28T12:46:24.063+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='gotphoto' AIRFLOW_CTX_DAG_ID='dbt_pipeline' AIRFLOW_CTX_TASK_ID='dbt_build_order_mart' AIRFLOW_CTX_EXECUTION_DATE='2025-07-28T12:44:30.180992+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-07-28T12:44:30.180992+00:00'
+[2025-07-28T12:46:24.065+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-07-28T12:46:24.066+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'cd /opt/***/dbt_project && dbt build --select marts.order_performance --project-dir . --profiles-dir profiles']
+[2025-07-28T12:46:24.072+0000] {subprocess.py:86} INFO - Output:
+[2025-07-28T12:46:24.747+0000] {subprocess.py:93} INFO - [0m12:46:24  Running with dbt=1.8.7
+[2025-07-28T12:46:25.440+0000] {subprocess.py:93} INFO - [0m12:46:25  Registered adapter: snowflake=1.8.4
+[2025-07-28T12:46:25.818+0000] {subprocess.py:93} INFO - [0m12:46:25  Found 27 models, 124 data tests, 8 sources, 569 macros
+[2025-07-28T12:46:25.821+0000] {subprocess.py:93} INFO - [0m12:46:25
+[2025-07-28T12:46:29.571+0000] {subprocess.py:93} INFO - [0m12:46:29  Concurrency: 1 threads (target='dev')
+[2025-07-28T12:46:29.571+0000] {subprocess.py:93} INFO - [0m12:46:29
+[2025-07-28T12:46:29.573+0000] {subprocess.py:93} INFO - [0m12:46:29  1 of 12 START sql table model ORDER_PERFORMANCE_MART.fact_order_fulfillment .... [RUN]
+[2025-07-28T12:47:14.045+0000] {subprocess.py:93} INFO - [0m12:47:14  1 of 12 OK created sql table model ORDER_PERFORMANCE_MART.fact_order_fulfillment  [[32mSUCCESS 1[0m in 44.47s]
+[2025-07-28T12:47:14.046+0000] {subprocess.py:93} INFO - [0m12:47:14  2 of 12 START sql table model ORDER_PERFORMANCE_MART.fact_order_summary ........ [RUN]
+[2025-07-28T12:47:30.052+0000] {subprocess.py:93} INFO - [0m12:47:30  2 of 12 OK created sql table model ORDER_PERFORMANCE_MART.fact_order_summary ... [[32mSUCCESS 1[0m in 16.00s]
+[2025-07-28T12:47:30.056+0000] {subprocess.py:93} INFO - [0m12:47:30  3 of 12 START test dbt_utils_unique_combination_of_columns_fact_order_fulfillment_order_key__line_number  [RUN]
+[2025-07-28T12:47:31.034+0000] {subprocess.py:93} INFO - [0m12:47:31  3 of 12 PASS dbt_utils_unique_combination_of_columns_fact_order_fulfillment_order_key__line_number  [[32mPASS[0m in 0.98s]
+[2025-07-28T12:47:31.038+0000] {subprocess.py:93} INFO - [0m12:47:31  4 of 12 START test not_null_fact_order_fulfillment_line_number ................. [RUN]
+[2025-07-28T12:47:31.654+0000] {subprocess.py:93} INFO - [0m12:47:31  4 of 12 PASS not_null_fact_order_fulfillment_line_number ....................... [[32mPASS[0m in 0.61s]
+[2025-07-28T12:47:31.656+0000] {subprocess.py:93} INFO - [0m12:47:31  5 of 12 START test not_null_fact_order_fulfillment_order_fulfillment_fact_key .. [RUN]
+[2025-07-28T12:47:32.242+0000] {subprocess.py:93} INFO - [0m12:47:32  5 of 12 PASS not_null_fact_order_fulfillment_order_fulfillment_fact_key ........ [[32mPASS[0m in 0.58s]
+[2025-07-28T12:47:32.246+0000] {subprocess.py:93} INFO - [0m12:47:32  6 of 12 START test not_null_fact_order_fulfillment_order_key ................... [RUN]
+[2025-07-28T12:47:32.785+0000] {subprocess.py:93} INFO - [0m12:47:32  6 of 12 PASS not_null_fact_order_fulfillment_order_key ......................... [[32mPASS[0m in 0.54s]
+[2025-07-28T12:47:32.789+0000] {subprocess.py:93} INFO - [0m12:47:32  7 of 12 START test unique_fact_order_fulfillment_order_fulfillment_fact_key .... [RUN]
+[2025-07-28T12:47:33.535+0000] {subprocess.py:93} INFO - [0m12:47:33  7 of 12 PASS unique_fact_order_fulfillment_order_fulfillment_fact_key .......... [[32mPASS[0m in 0.74s]
+[2025-07-28T12:47:33.539+0000] {subprocess.py:93} INFO - [0m12:47:33  8 of 12 START test not_null_fact_order_summary_customer_key .................... [RUN]
+[2025-07-28T12:47:34.238+0000] {subprocess.py:93} INFO - [0m12:47:34  8 of 12 PASS not_null_fact_order_summary_customer_key .......................... [[32mPASS[0m in 0.70s]
+[2025-07-28T12:47:34.241+0000] {subprocess.py:93} INFO - [0m12:47:34  9 of 12 START test not_null_fact_order_summary_order_key ....................... [RUN]
+[2025-07-28T12:47:34.785+0000] {subprocess.py:93} INFO - [0m12:47:34  9 of 12 PASS not_null_fact_order_summary_order_key ............................. [[32mPASS[0m in 0.54s]
+[2025-07-28T12:47:34.789+0000] {subprocess.py:93} INFO - [0m12:47:34  10 of 12 START test not_null_fact_order_summary_order_summary_fact_key ......... [RUN]
+[2025-07-28T12:47:35.225+0000] {subprocess.py:93} INFO - [0m12:47:35  10 of 12 PASS not_null_fact_order_summary_order_summary_fact_key ............... [[32mPASS[0m in 0.43s]
+[2025-07-28T12:47:35.227+0000] {subprocess.py:93} INFO - [0m12:47:35  11 of 12 START test unique_fact_order_summary_order_key ........................ [RUN]
+[2025-07-28T12:47:35.888+0000] {subprocess.py:93} INFO - [0m12:47:35  11 of 12 PASS unique_fact_order_summary_order_key .............................. [[32mPASS[0m in 0.66s]
+[2025-07-28T12:47:35.890+0000] {subprocess.py:93} INFO - [0m12:47:35  12 of 12 START test unique_fact_order_summary_order_summary_fact_key ........... [RUN]
+[2025-07-28T12:47:36.534+0000] {subprocess.py:93} INFO - [0m12:47:36  12 of 12 PASS unique_fact_order_summary_order_summary_fact_key ................. [[32mPASS[0m in 0.64s]
+[2025-07-28T12:47:36.536+0000] {subprocess.py:93} INFO - [0m12:47:36
+[2025-07-28T12:47:36.537+0000] {subprocess.py:93} INFO - [0m12:47:36  Finished running 2 table models, 10 data tests in 0 hours 1 minutes and 10.71 seconds (70.71s).
+[2025-07-28T12:47:36.593+0000] {subprocess.py:93} INFO - [0m12:47:36
+[2025-07-28T12:47:36.593+0000] {subprocess.py:93} INFO - [0m12:47:36  [32mCompleted successfully[0m
+[2025-07-28T12:47:36.594+0000] {subprocess.py:93} INFO - [0m12:47:36
+[2025-07-28T12:47:36.594+0000] {subprocess.py:93} INFO - [0m12:47:36  Done. PASS=12 WARN=0 ERROR=0 SKIP=0 TOTAL=12
+[2025-07-28T12:47:37.377+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2025-07-28T12:47:37.388+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=dbt_pipeline, task_id=dbt_build_order_mart, execution_date=20250728T124430, start_date=20250728T124623, end_date=20250728T124737
+[2025-07-28T12:47:37.409+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-07-28T12:47:37.416+0000] {taskinstance.py:3280} INFO - 0 downstream tasks scheduled from follow-on schedule check

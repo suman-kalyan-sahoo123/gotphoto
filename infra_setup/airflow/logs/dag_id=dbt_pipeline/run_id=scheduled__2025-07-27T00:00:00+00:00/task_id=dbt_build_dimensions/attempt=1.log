@@ -1,0 +1,81 @@
+[2025-07-28T12:40:04.017+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: dbt_pipeline.dbt_build_dimensions scheduled__2025-07-27T00:00:00+00:00 [queued]>
+[2025-07-28T12:40:04.020+0000] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: dbt_pipeline.dbt_build_dimensions scheduled__2025-07-27T00:00:00+00:00 [queued]>
+[2025-07-28T12:40:04.020+0000] {taskinstance.py:2170} INFO - Starting attempt 1 of 2
+[2025-07-28T12:40:04.024+0000] {taskinstance.py:2191} INFO - Executing <Task(BashOperator): dbt_build_dimensions> on 2025-07-27 00:00:00+00:00
+[2025-07-28T12:40:04.026+0000] {standard_task_runner.py:60} INFO - Started process 345 to run task
+[2025-07-28T12:40:04.027+0000] {standard_task_runner.py:87} INFO - Running: ['***', 'tasks', 'run', 'dbt_pipeline', 'dbt_build_dimensions', 'scheduled__2025-07-27T00:00:00+00:00', '--job-id', '32', '--raw', '--subdir', 'DAGS_FOLDER/dbt_pipeline.py', '--cfg-path', '/tmp/tmphz_0oobv']
+[2025-07-28T12:40:04.028+0000] {standard_task_runner.py:88} INFO - Job 32: Subtask dbt_build_dimensions
+[2025-07-28T12:40:04.034+0000] {warnings.py:109} WARNING - /home/***/.local/lib/python3.8/site-packages/***/settings.py:194: DeprecationWarning: The sql_alchemy_conn option in [core] has been moved to the sql_alchemy_conn option in [database] - the old setting has been used, but please update your config.
+  SQL_ALCHEMY_CONN = conf.get("database", "SQL_ALCHEMY_CONN")
+
+[2025-07-28T12:40:04.052+0000] {task_command.py:423} INFO - Running <TaskInstance: dbt_pipeline.dbt_build_dimensions scheduled__2025-07-27T00:00:00+00:00 [running]> on host 26b399183f28
+[2025-07-28T12:40:04.074+0000] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='gotphoto' AIRFLOW_CTX_DAG_ID='dbt_pipeline' AIRFLOW_CTX_TASK_ID='dbt_build_dimensions' AIRFLOW_CTX_EXECUTION_DATE='2025-07-27T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-07-27T00:00:00+00:00'
+[2025-07-28T12:40:04.075+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-07-28T12:40:04.076+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'cd /opt/***/dbt_project && dbt build --select dimensions --project-dir . --profiles-dir profiles']
+[2025-07-28T12:40:04.081+0000] {subprocess.py:86} INFO - Output:
+[2025-07-28T12:40:04.731+0000] {subprocess.py:93} INFO - [0m12:40:04  Running with dbt=1.8.7
+[2025-07-28T12:40:05.268+0000] {subprocess.py:93} INFO - [0m12:40:05  Registered adapter: snowflake=1.8.4
+[2025-07-28T12:40:05.584+0000] {subprocess.py:93} INFO - [0m12:40:05  Found 27 models, 124 data tests, 8 sources, 569 macros
+[2025-07-28T12:40:05.587+0000] {subprocess.py:93} INFO - [0m12:40:05
+[2025-07-28T12:40:09.517+0000] {subprocess.py:93} INFO - [0m12:40:09  Concurrency: 1 threads (target='dev')
+[2025-07-28T12:40:09.518+0000] {subprocess.py:93} INFO - [0m12:40:09
+[2025-07-28T12:40:09.522+0000] {subprocess.py:93} INFO - [0m12:40:09  1 of 25 START sql table model DIMENSIONS.dim_customers ......................... [RUN]
+[2025-07-28T12:40:12.334+0000] {subprocess.py:93} INFO - [0m12:40:12  1 of 25 OK created sql table model DIMENSIONS.dim_customers .................... [[32mSUCCESS 1[0m in 2.81s]
+[2025-07-28T12:40:12.336+0000] {subprocess.py:93} INFO - [0m12:40:12  2 of 25 START sql table model DIMENSIONS.dim_date .............................. [RUN]
+[2025-07-28T12:40:13.908+0000] {subprocess.py:93} INFO - [0m12:40:13  2 of 25 OK created sql table model DIMENSIONS.dim_date ......................... [[32mSUCCESS 1[0m in 1.57s]
+[2025-07-28T12:40:13.911+0000] {subprocess.py:93} INFO - [0m12:40:13  3 of 25 START sql table model DIMENSIONS.dim_geo ............................... [RUN]
+[2025-07-28T12:40:15.543+0000] {subprocess.py:93} INFO - [0m12:40:15  3 of 25 OK created sql table model DIMENSIONS.dim_geo .......................... [[32mSUCCESS 1[0m in 1.63s]
+[2025-07-28T12:40:15.544+0000] {subprocess.py:93} INFO - [0m12:40:15  4 of 25 START sql table model DIMENSIONS.dim_product ........................... [RUN]
+[2025-07-28T12:40:17.923+0000] {subprocess.py:93} INFO - [0m12:40:17  4 of 25 OK created sql table model DIMENSIONS.dim_product ...................... [[32mSUCCESS 1[0m in 2.38s]
+[2025-07-28T12:40:17.924+0000] {subprocess.py:93} INFO - [0m12:40:17  5 of 25 START sql table model DIMENSIONS.dim_supplier .......................... [RUN]
+[2025-07-28T12:40:19.513+0000] {subprocess.py:93} INFO - [0m12:40:19  5 of 25 OK created sql table model DIMENSIONS.dim_supplier ..................... [[32mSUCCESS 1[0m in 1.58s]
+[2025-07-28T12:40:19.515+0000] {subprocess.py:93} INFO - [0m12:40:19  6 of 25 START test not_null_dim_customers_customer_key ......................... [RUN]
+[2025-07-28T12:40:20.070+0000] {subprocess.py:93} INFO - [0m12:40:20  6 of 25 PASS not_null_dim_customers_customer_key ............................... [[32mPASS[0m in 0.55s]
+[2025-07-28T12:40:20.071+0000] {subprocess.py:93} INFO - [0m12:40:20  7 of 25 START test not_null_dim_customers_customer_name ........................ [RUN]
+[2025-07-28T12:40:20.520+0000] {subprocess.py:93} INFO - [0m12:40:20  7 of 25 PASS not_null_dim_customers_customer_name .............................. [[32mPASS[0m in 0.45s]
+[2025-07-28T12:40:20.521+0000] {subprocess.py:93} INFO - [0m12:40:20  8 of 25 START test unique_dim_customers_customer_key ........................... [RUN]
+[2025-07-28T12:40:21.135+0000] {subprocess.py:93} INFO - [0m12:40:21  8 of 25 PASS unique_dim_customers_customer_key ................................. [[32mPASS[0m in 0.61s]
+[2025-07-28T12:40:21.136+0000] {subprocess.py:93} INFO - [0m12:40:21  9 of 25 START test not_null_dim_date_date_key .................................. [RUN]
+[2025-07-28T12:40:21.640+0000] {subprocess.py:93} INFO - [0m12:40:21  9 of 25 PASS not_null_dim_date_date_key ........................................ [[32mPASS[0m in 0.50s]
+[2025-07-28T12:40:21.642+0000] {subprocess.py:93} INFO - [0m12:40:21  10 of 25 START test not_null_dim_date_day ...................................... [RUN]
+[2025-07-28T12:40:22.280+0000] {subprocess.py:93} INFO - [0m12:40:22  10 of 25 PASS not_null_dim_date_day ............................................ [[32mPASS[0m in 0.64s]
+[2025-07-28T12:40:22.284+0000] {subprocess.py:93} INFO - [0m12:40:22  11 of 25 START test not_null_dim_date_full_date ................................ [RUN]
+[2025-07-28T12:40:22.820+0000] {subprocess.py:93} INFO - [0m12:40:22  11 of 25 PASS not_null_dim_date_full_date ...................................... [[32mPASS[0m in 0.54s]
+[2025-07-28T12:40:22.823+0000] {subprocess.py:93} INFO - [0m12:40:22  12 of 25 START test not_null_dim_date_month .................................... [RUN]
+[2025-07-28T12:40:23.361+0000] {subprocess.py:93} INFO - [0m12:40:23  12 of 25 PASS not_null_dim_date_month .......................................... [[32mPASS[0m in 0.54s]
+[2025-07-28T12:40:23.363+0000] {subprocess.py:93} INFO - [0m12:40:23  13 of 25 START test not_null_dim_date_year ..................................... [RUN]
+[2025-07-28T12:40:23.823+0000] {subprocess.py:93} INFO - [0m12:40:23  13 of 25 PASS not_null_dim_date_year ........................................... [[32mPASS[0m in 0.46s]
+[2025-07-28T12:40:23.826+0000] {subprocess.py:93} INFO - [0m12:40:23  14 of 25 START test unique_dim_date_date_key ................................... [RUN]
+[2025-07-28T12:40:24.211+0000] {subprocess.py:93} INFO - [0m12:40:24  14 of 25 PASS unique_dim_date_date_key ......................................... [[32mPASS[0m in 0.38s]
+[2025-07-28T12:40:24.213+0000] {subprocess.py:93} INFO - [0m12:40:24  15 of 25 START test not_null_dim_geo_nation_key ................................ [RUN]
+[2025-07-28T12:40:24.745+0000] {subprocess.py:93} INFO - [0m12:40:24  15 of 25 PASS not_null_dim_geo_nation_key ...................................... [[32mPASS[0m in 0.53s]
+[2025-07-28T12:40:24.748+0000] {subprocess.py:93} INFO - [0m12:40:24  16 of 25 START test not_null_dim_geo_nation_name ............................... [RUN]
+[2025-07-28T12:40:25.223+0000] {subprocess.py:93} INFO - [0m12:40:25  16 of 25 PASS not_null_dim_geo_nation_name ..................................... [[32mPASS[0m in 0.47s]
+[2025-07-28T12:40:25.225+0000] {subprocess.py:93} INFO - [0m12:40:25  17 of 25 START test not_null_dim_geo_region_key ................................ [RUN]
+[2025-07-28T12:40:25.606+0000] {subprocess.py:93} INFO - [0m12:40:25  17 of 25 PASS not_null_dim_geo_region_key ...................................... [[32mPASS[0m in 0.38s]
+[2025-07-28T12:40:25.607+0000] {subprocess.py:93} INFO - [0m12:40:25  18 of 25 START test not_null_dim_geo_region_name ............................... [RUN]
+[2025-07-28T12:40:26.193+0000] {subprocess.py:93} INFO - [0m12:40:26  18 of 25 PASS not_null_dim_geo_region_name ..................................... [[32mPASS[0m in 0.59s]
+[2025-07-28T12:40:26.196+0000] {subprocess.py:93} INFO - [0m12:40:26  19 of 25 START test unique_dim_geo_nation_key .................................. [RUN]
+[2025-07-28T12:40:26.626+0000] {subprocess.py:93} INFO - [0m12:40:26  19 of 25 PASS unique_dim_geo_nation_key ........................................ [[32mPASS[0m in 0.43s]
+[2025-07-28T12:40:26.629+0000] {subprocess.py:93} INFO - [0m12:40:26  20 of 25 START test not_null_dim_product_part_key .............................. [RUN]
+[2025-07-28T12:40:27.249+0000] {subprocess.py:93} INFO - [0m12:40:27  20 of 25 PASS not_null_dim_product_part_key .................................... [[32mPASS[0m in 0.62s]
+[2025-07-28T12:40:27.253+0000] {subprocess.py:93} INFO - [0m12:40:27  21 of 25 START test not_null_dim_product_part_name ............................. [RUN]
+[2025-07-28T12:40:27.703+0000] {subprocess.py:93} INFO - [0m12:40:27  21 of 25 PASS not_null_dim_product_part_name ................................... [[32mPASS[0m in 0.45s]
+[2025-07-28T12:40:27.705+0000] {subprocess.py:93} INFO - [0m12:40:27  22 of 25 START test unique_dim_product_part_key ................................ [RUN]
+[2025-07-28T12:40:28.355+0000] {subprocess.py:93} INFO - [0m12:40:28  22 of 25 PASS unique_dim_product_part_key ...................................... [[32mPASS[0m in 0.65s]
+[2025-07-28T12:40:28.357+0000] {subprocess.py:93} INFO - [0m12:40:28  23 of 25 START test not_null_dim_supplier_supplier_key ......................... [RUN]
+[2025-07-28T12:40:28.881+0000] {subprocess.py:93} INFO - [0m12:40:28  23 of 25 PASS not_null_dim_supplier_supplier_key ............................... [[32mPASS[0m in 0.52s]
+[2025-07-28T12:40:28.884+0000] {subprocess.py:93} INFO - [0m12:40:28  24 of 25 START test not_null_dim_supplier_supplier_name ........................ [RUN]
+[2025-07-28T12:40:29.332+0000] {subprocess.py:93} INFO - [0m12:40:29  24 of 25 PASS not_null_dim_supplier_supplier_name .............................. [[32mPASS[0m in 0.45s]
+[2025-07-28T12:40:29.334+0000] {subprocess.py:93} INFO - [0m12:40:29  25 of 25 START test unique_dim_supplier_supplier_key ........................... [RUN]
+[2025-07-28T12:40:29.992+0000] {subprocess.py:93} INFO - [0m12:40:29  25 of 25 PASS unique_dim_supplier_supplier_key ................................. [[32mPASS[0m in 0.66s]
+[2025-07-28T12:40:29.996+0000] {subprocess.py:93} INFO - [0m12:40:29
+[2025-07-28T12:40:29.997+0000] {subprocess.py:93} INFO - [0m12:40:29  Finished running 5 table models, 20 data tests in 0 hours 0 minutes and 24.41 seconds (24.41s).
+[2025-07-28T12:40:30.063+0000] {subprocess.py:93} INFO - [0m12:40:30
+[2025-07-28T12:40:30.064+0000] {subprocess.py:93} INFO - [0m12:40:30  [32mCompleted successfully[0m
+[2025-07-28T12:40:30.064+0000] {subprocess.py:93} INFO - [0m12:40:30
+[2025-07-28T12:40:30.065+0000] {subprocess.py:93} INFO - [0m12:40:30  Done. PASS=25 WARN=0 ERROR=0 SKIP=0 TOTAL=25
+[2025-07-28T12:40:30.772+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2025-07-28T12:40:30.784+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=dbt_pipeline, task_id=dbt_build_dimensions, execution_date=20250727T000000, start_date=20250728T124004, end_date=20250728T124030
+[2025-07-28T12:40:30.812+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-07-28T12:40:30.823+0000] {taskinstance.py:3280} INFO - 4 downstream tasks scheduled from follow-on schedule check
