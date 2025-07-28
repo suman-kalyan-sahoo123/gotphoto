@@ -603,6 +603,8 @@ docker exec dbt-cli ps aux | grep dbt
 
 ### **How It Works**
 
+![PR Merge Process](infra_setup/images_for_readme/pr_image.png)
+
 ![CI/CD Pipeline Flow](infra_setup/images_for_readme/cicd.png)
 
 **What happens:**
