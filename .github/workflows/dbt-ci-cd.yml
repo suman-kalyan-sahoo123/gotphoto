@@ -56,6 +56,16 @@ jobs:
                 threads: 2
           EOF
           
+      - name: Debug profiles creation
+        run: |
+          cd gotphoto_dbt_project
+          echo "=== Current directory ==="
+          pwd
+          echo "=== Profiles directory contents ==="
+          ls -la profiles/ 2>/dev/null || echo "profiles directory not found"
+          echo "=== Profiles.yml content ==="
+          cat profiles/profiles.yml 2>/dev/null || echo "profiles.yml not found"
+          
       - name: Verify source database exists
         run: |
           python -c "
