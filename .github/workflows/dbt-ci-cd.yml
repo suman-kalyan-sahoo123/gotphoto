@@ -4,15 +4,15 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'gotphoto/gotphoto_dbt_project/**'
+      - 'gotphoto_dbt_project/**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'gotphoto/gotphoto_dbt_project/**'
+      - 'gotphoto_dbt_project/**'
 
 env:
-  DBT_PROFILES_DIR: ./gotphoto/gotphoto_dbt_project/profiles
-  DBT_PROJECT_DIR: ./gotphoto/gotphoto_dbt_project
+  DBT_PROFILES_DIR: ./gotphoto_dbt_project/profiles
+  DBT_PROJECT_DIR: ./gotphoto_dbt_project
 
 jobs:
   pr-validation:
@@ -38,8 +38,8 @@ jobs:
           
       - name: Create dbt profiles
         run: |
-          mkdir -p $DBT_PROFILES_DIR
-          cat > $DBT_PROFILES_DIR/profiles.yml << EOF
+          mkdir -p gotphoto_dbt_project/profiles
+          cat > gotphoto_dbt_project/profiles/profiles.yml << EOF
           gotphoto_dbt_project:
             target: pr_${{ github.event.number }}
             outputs:
@@ -116,23 +116,39 @@ jobs:
           
       - name: dbt debug
         run: |
-          cd gotphoto/gotphoto_dbt_project
-          dbt debug
+          cd gotphoto_dbt_project
+          dbt debug --project-dir . --profiles-dir profiles
           
       - name: dbt deps
         run: |
-          cd gotphoto/gotphoto_dbt_project
-          dbt deps
+          cd gotphoto_dbt_project
+          dbt deps --project-dir . --profiles-dir profiles
           
       - name: dbt compile
         run: |
-          cd gotphoto/gotphoto_dbt_project
-          dbt compile
+          cd gotphoto_dbt_project
+          dbt compile --project-dir . --profiles-dir profiles
           
       - name: dbt run (changed models only)
         run: |
-          cd gotphoto/gotphoto_dbt_project
-          dbt run --select state:modified+ --state-refs main
+          cd gotphoto_dbt_project
+          # Get changed files and run only those models
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep "models/" || echo "")
+          if [ -n "$CHANGED_FILES" ]; then
+            echo "Changed model files: $CHANGED_FILES"
+            # Convert file paths to dbt model names (e.g., models/staging/stg_customers.sql -> staging.stg_customers)
+            MODEL_NAMES=$(echo "$CHANGED_FILES" | grep "\.sql$" | sed 's|models/||g' | sed 's|\.sql||g' | sed 's|/|.|g' | tr '\n' ' ')
+            if [ -n "$MODEL_NAMES" ]; then
+              echo "Running models: $MODEL_NAMES"
+              dbt run --select $MODEL_NAMES --project-dir . --profiles-dir profiles
+            else
+              echo "No .sql files changed, running all models"
+              dbt run --project-dir . --profiles-dir profiles
+            fi
+          else
+            echo "No model files changed, running all models"
+            dbt run --project-dir . --profiles-dir profiles
+          fi
           
       - name: Cleanup cloned database
         if: always()
@@ -185,8 +201,8 @@ jobs:
           
       - name: Create dbt profiles
         run: |
-          mkdir -p $DBT_PROFILES_DIR
-          cat > $DBT_PROFILES_DIR/profiles.yml << EOF
+          mkdir -p gotphoto_dbt_project/profiles
+          cat > gotphoto_dbt_project/profiles/profiles.yml << EOF
           gotphoto_dbt_project:
             target: prod
             outputs:
@@ -204,20 +220,20 @@ jobs:
           
       - name: dbt debug
         run: |
-          cd gotphoto/gotphoto_dbt_project
-          dbt debug
+          cd gotphoto_dbt_project
+          dbt debug --project-dir . --profiles-dir profiles
           
       - name: dbt deps
         run: |
-          cd gotphoto/gotphoto_dbt_project
-          dbt deps
+          cd gotphoto_dbt_project
+          dbt deps --project-dir . --profiles-dir profiles
           
       - name: dbt compile
         run: |
-          cd gotphoto/gotphoto_dbt_project
-          dbt compile
+          cd gotphoto_dbt_project
+          dbt compile --project-dir . --profiles-dir profiles
           
-      - name: dbt run (changed models with full-refresh)
+      - name: dbt run (all models with full-refresh)
         run: |
-          cd gotphoto/gotphoto_dbt_project
-          dbt run --select state:modified+ --state-refs main --full-refresh 
+          cd gotphoto_dbt_project
+          dbt run --full-refresh --project-dir . --profiles-dir profiles 

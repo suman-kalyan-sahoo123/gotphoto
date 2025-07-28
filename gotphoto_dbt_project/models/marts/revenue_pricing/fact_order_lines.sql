@@ -122,8 +122,7 @@ select
   case when lp.quantity > 0 then lp.net_revenue / lp.quantity else null end as net_unit_price,
   case when lp.quantity > 0 then lp.supplier_cost / lp.quantity else null end as unit_cost,
   case when lp.quantity > 0 then lp.margin / lp.quantity else null end as margin_per_unit,
-  
-  -- Order size categories
+
   case 
     when lp.quantity > 100 then 'Large Order'
     when lp.quantity > 50 then 'Medium Order'
