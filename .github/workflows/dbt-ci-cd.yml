@@ -136,7 +136,15 @@ jobs:
           CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep "models/" || echo "")
           if [ -n "$CHANGED_FILES" ]; then
             echo "Changed model files: $CHANGED_FILES"
-            dbt run --select $(echo $CHANGED_FILES | sed 's/models\///g' | sed 's/\.sql//g' | tr '\n' ' ') --project-dir . --profiles-dir profiles
+            # Convert file paths to dbt model names (e.g., models/staging/stg_customers.sql -> staging.stg_customers)
+            MODEL_NAMES=$(echo "$CHANGED_FILES" | grep "\.sql$" | sed 's|models/||g' | sed 's|\.sql||g' | sed 's|/|.|g' | tr '\n' ' ')
+            if [ -n "$MODEL_NAMES" ]; then
+              echo "Running models: $MODEL_NAMES"
+              dbt run --select $MODEL_NAMES --project-dir . --profiles-dir profiles
+            else
+              echo "No .sql files changed, running all models"
+              dbt run --project-dir . --profiles-dir profiles
+            fi
           else
             echo "No model files changed, running all models"
             dbt run --project-dir . --profiles-dir profiles
