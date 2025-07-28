@@ -11,8 +11,8 @@ on:
       - 'gotphoto_dbt_project/**'
 
 env:
-  DBT_PROFILES_DIR: ./gotphoto/gotphoto_dbt_project/profiles
-  DBT_PROJECT_DIR: ./gotphoto/gotphoto_dbt_project
+  DBT_PROFILES_DIR: ./gotphoto_dbt_project/profiles
+  DBT_PROJECT_DIR: ./gotphoto_dbt_project
 
 jobs:
   pr-validation:
@@ -116,22 +116,22 @@ jobs:
           
       - name: dbt debug
         run: |
-          cd gotphoto/gotphoto_dbt_project
+          cd gotphoto_dbt_project
           dbt debug
           
       - name: dbt deps
         run: |
-          cd gotphoto/gotphoto_dbt_project
+          cd gotphoto_dbt_project
           dbt deps
           
       - name: dbt compile
         run: |
-          cd gotphoto/gotphoto_dbt_project
+          cd gotphoto_dbt_project
           dbt compile
           
       - name: dbt run (changed models only)
         run: |
-          cd gotphoto/gotphoto_dbt_project
+          cd gotphoto_dbt_project
           dbt run --select state:modified+ --state-refs main
           
       - name: Cleanup cloned database
@@ -204,20 +204,20 @@ jobs:
           
       - name: dbt debug
         run: |
-          cd gotphoto/gotphoto_dbt_project
+          cd gotphoto_dbt_project
           dbt debug
           
       - name: dbt deps
         run: |
-          cd gotphoto/gotphoto_dbt_project
+          cd gotphoto_dbt_project
           dbt deps
           
       - name: dbt compile
         run: |
-          cd gotphoto/gotphoto_dbt_project
+          cd gotphoto_dbt_project
           dbt compile
           
       - name: dbt run (changed models with full-refresh)
         run: |
-          cd gotphoto/gotphoto_dbt_project
+          cd gotphoto_dbt_project
           dbt run --select state:modified+ --state-refs main --full-refresh 
