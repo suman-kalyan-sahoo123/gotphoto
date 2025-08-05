@@ -28,18 +28,21 @@ models:
     staging:
       +materialized: table
       +schema: staging
+      +tags: ['staging']
       +persist_docs:
         relation: true
         columns: true
     intermediate:
       +materialized: table
       +schema: intermediate
+      +tags: ['intermediate']
       +persist_docs:
         relation: true
         columns: true
     dimensions:
       +materialized: table
       +schema: dimensions
+      +tags: ['dimensions']
       +persist_docs:
         relation: true
         columns: true
@@ -47,24 +50,28 @@ models:
       revenue_pricing:
         +materialized: table
         +schema: revenue_pricing_mart
+        +tags: ['marts', 'revenue_pricing']
         +persist_docs:
           relation: true
           columns: true
       customer_analytics:
         +materialized: table
         +schema: customer_analytics_mart
+        +tags: ['marts', 'customer_analytics']
         +persist_docs:
           relation: true
           columns: true
       supplier_analytics:
         +materialized: table
         +schema: supplier_analytics_mart
+        +tags: ['marts', 'supplier_analytics']
         +persist_docs:
           relation: true
           columns: true
       order_performance:
         +materialized: table
         +schema: order_performance_mart
+        +tags: ['marts', 'order_performance']
         +persist_docs:
           relation: true
           columns: true

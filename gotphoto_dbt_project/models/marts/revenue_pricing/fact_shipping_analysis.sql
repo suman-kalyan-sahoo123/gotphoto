@@ -10,7 +10,7 @@ with line_pricing as (
     gross_revenue,
     net_revenue,
     margin
-  from {{ ref('int_line_pricing_calcs') }}
+  from {{ ref('fact_line_pricing_analysis') }}
 ),
 
 customer_geo as (

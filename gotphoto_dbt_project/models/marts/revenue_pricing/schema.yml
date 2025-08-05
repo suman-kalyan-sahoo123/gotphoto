@@ -283,4 +283,47 @@ models:
       - name: shipment_size_category
         description: "Shipment size classification - Large (>100), Medium (51-100), Small (≤50)"
       - name: profitability_flag
-        description: "Profitability flag - Profitable (margin > 0) or Loss Making (margin ≤ 0)" 
+        description: "Profitability flag - Profitable (margin > 0) or Loss Making (margin ≤ 0)"
+
+  - name: fact_line_pricing_analysis
+    description: "Pricing and cost metrics calculated at the order-line grain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_key
+            - line_number
+    columns:
+      - name: order_key
+        description: "Order identifier"
+      - name: line_number
+        description: "Line sequence within the order"
+      - name: part_key
+        description: "Product identifier"
+      - name: supplier_key
+        description: "Supplier identifier"
+      - name: customer_key
+        description: "Customer placing the order"
+      - name: nation_key
+        description: "Nation identifier"
+      - name: order_date
+        description: "Date the order was placed"
+      - name: ship_date
+        description: "Date the order was shipped"
+      - name: quantity
+        description: "Quantity ordered"
+      - name: gross_revenue
+        description: "Extended price (qty * unit price)"
+      - name: discount_amount
+        description: "Discount in monetary terms"
+      - name: net_revenue
+        description: "Revenue after discount, before tax"
+      - name: tax_amount
+        description: "Tax applied on the net revenue"
+      - name: supplier_cost
+        description: "Total supplier cost for the line"
+      - name: margin
+        description: "Profit margin in currency"
+      - name: margin_pct
+        description: "Margin as percentage of net revenue"
+      - name: average_selling_point
+        description: "Average selling price per unit (net_revenue / qty)" 

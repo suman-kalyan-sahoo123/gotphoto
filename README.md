@@ -92,7 +92,7 @@ gotphoto_dbt_project/
 │   │   ├── schema.yml
 │   │   ├── int_lineitem_orders.sql
 │   │   ├── int_product_supplier_cost.sql
-│   │   ├── int_line_pricing_calcs.sql
+│   │   ├── fact_line_pricing_analysis.sql
 │   │   └── int_customer_geo.sql
 │   │
 │   ├── 📁 dimensions/           # Conformed dimensions

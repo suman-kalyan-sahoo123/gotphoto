@@ -3,6 +3,8 @@ version: 2
 models:
   - name: stg_customers
     description: "Cleaned customer data from TPC-H dataset"
+    config:
+      tags: ['staging']
     columns:
       - name: customer_key
         description: "Primary key for customer"
@@ -30,6 +32,8 @@ models:
 
   - name: stg_orders
     description: "Cleaned order data from TPC-H dataset"
+    config:
+      tags: ['staging']
     columns:
       - name: order_key
         description: "Primary key for order"
@@ -57,6 +61,8 @@ models:
 
   - name: stg_lineitem
     description: "Cleaned line item data from TPC-H dataset"
+    config:
+      tags: ['staging']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -104,6 +110,7 @@ models:
 
   - name: stg_supplier
     description: "Cleaned supplier data from TPC-H dataset"
+    tags: ['staging']
     columns:
       - name: supplier_key
         description: "Primary key for supplier"
@@ -129,6 +136,7 @@ models:
 
   - name: stg_nation
     description: "Cleaned nation data from TPC-H dataset"
+    tags: ['staging']
     columns:
       - name: nation_key
         description: "Primary key for nation"
@@ -148,6 +156,7 @@ models:
 
   - name: stg_part
     description: "Cleaned part data from TPC-H dataset"
+    tags: ['staging']
     columns:
       - name: part_key
         description: "Primary key for part"
@@ -175,6 +184,7 @@ models:
 
   - name: stg_partsupp
     description: "Cleaned part-supplier data from TPC-H dataset"
+    tags: ['staging']
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -198,6 +208,7 @@ models:
 
   - name: stg_region
     description: "Cleaned region data from TPC-H dataset"
+    tags: ['staging']
     columns:
       - name: region_key
         description: "Primary key for region"

@@ -41,34 +41,7 @@ models:
       - name: available_quantity
         description: "Quantity available from supplier"
 
-  - name: int_line_pricing_calcs
-    description: "Pricing and cost metrics calculated at the order-line grain"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - order_key
-            - line_number
-    columns:
-      - name: order_key
-        description: "Order identifier"
-      - name: line_number
-        description: "Line sequence within the order"
-      - name: gross_revenue
-        description: "Extended price (qty * unit price)"
-      - name: discount_amount
-        description: "Discount in monetary terms"
-      - name: net_revenue
-        description: "Revenue after discount, before tax"
-      - name: tax_amount
-        description: "Tax applied on the net revenue"
-      - name: supplier_cost
-        description: "Total supplier cost for the line"
-      - name: margin
-        description: "Profit margin in currency"
-      - name: margin_pct
-        description: "Margin as percentage of net revenue"
-      - name: average_selling_point
-        description: "Average selling price per unit (net_revenue / qty)"
+
 
   - name: int_customer_geo
     description: |
