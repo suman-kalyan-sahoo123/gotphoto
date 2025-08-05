@@ -10,7 +10,7 @@ with line_pricing as (
     net_revenue,
     tax_amount,
     average_selling_point
-  from {{ ref('int_line_pricing_calcs') }}
+  from {{ ref('fact_line_pricing_analysis') }}
 ),
 
 product_info as (

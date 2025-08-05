@@ -20,7 +20,7 @@ airflow-up:
 	@echo "3. Starting all services..."
 	docker compose up -d
 	@echo "✅ Airflow is ready!"
-	@echo "🌐 Web UI: http://localhost:8081 (airflow/airflow)"
+	@echo "🌐 Web UI: http://localhost:8082 (airflow/airflow)"
 	@echo "🌸 Flower: http://localhost:5555"
 	@echo "📁 DAGs folder: ./dags/"
 
