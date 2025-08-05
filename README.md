@@ -48,6 +48,8 @@ This platform delivers comprehensive analytics across key business domains:
 | **Data Marts** | Business-specific analytics | Table | `*_MART` |
 
 ---
+![logical Architecture Flow](infra_setup/images_for_readme/logical_diagram.png)
+
 
 ## 📊 Data Sources
 
@@ -92,7 +94,7 @@ gotphoto_dbt_project/
 │   │   ├── schema.yml
 │   │   ├── int_lineitem_orders.sql
 │   │   ├── int_product_supplier_cost.sql
-│   │   ├── fact_line_pricing_analysis.sql
+│   │   ├── int_line_pricing_calcs.sql
 │   │   └── int_customer_geo.sql
 │   │
 │   ├── 📁 dimensions/           # Conformed dimensions
